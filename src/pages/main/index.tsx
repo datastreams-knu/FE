@@ -1,25 +1,27 @@
 import { useState } from 'react';
-import MessageInput from './message-input';
-import MessageList from './message-list';
+import { MessageInput } from './message-input';
+import { MessageList } from './message-list';
 import { Sidebar } from './sidebar';
 import { IconButton } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import styled from '@emotion/styled';
 
 const MainPage = () => {
-  const [messages, setMessages] = useState<string[]>([]);
-  const [inputMessage, setInputMessage] = useState(''); // 메시지 입력 상태 관리
-  const [isSidebarOpen, setSidebarOpen] = useState(true); // 사이드바가 기본적으로 열려있도록 초기 상태를 true로 설정
+  const [messages, setMessages] = useState<string[]>([]); // 메시지 리스트 상태
+  const [inputMessage, setInputMessage] = useState('');   // 메시지 입력 상태
+  const [isSidebarOpen, setSidebarOpen] = useState(true); // 사이드바 상태
 
+  // 메시지 전송 함수
   const handleSendMessage = () => {
     if (inputMessage.trim()) {
-      setMessages((prev) => [inputMessage, ...prev]); // 메시지를 배열에 추가
+      setMessages((prev) => [inputMessage, ...prev]); // 새 메시지를 메시지 리스트에 추가
       setInputMessage(''); // 메시지 입력창 초기화
     }
   };
 
+  // 사이드바 열기/닫기 함수
   const toggleSidebar = () => {
-    setSidebarOpen((prev) => !prev); // 사이드바 열기/닫기 토글
+    setSidebarOpen((prev) => !prev);
   };
 
   return (
@@ -27,7 +29,7 @@ const MainPage = () => {
       {/* 사이드바 컴포넌트 */}
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       
-      {/* 사이드바가 닫혔을 때 열기 버튼을 메인 페이지에 표시 */}
+      {/* 사이드바가 닫혔을 때, 열기 버튼 표시 */}
       {!isSidebarOpen && (
         <OpenButtonContainer>
           <IconButton
@@ -40,7 +42,10 @@ const MainPage = () => {
       )}
 
       <Wrapper isSidebarOpen={isSidebarOpen}>
+        {/* 메시지 리스트 출력 */}
         <MessageList messages={messages} />
+
+        {/* 메시지 입력창 */}
         <MessageInput
           inputMessage={inputMessage}
           setInputMessage={setInputMessage}
@@ -53,14 +58,14 @@ const MainPage = () => {
 
 export default MainPage;
 
-// Wrapper 컴포넌트의 스타일
+// Wrapper 컴포넌트 스타일
 const Wrapper = styled.div<{ isSidebarOpen: boolean }>`
   padding: 20px;
   margin-left: ${({ isSidebarOpen }) => (isSidebarOpen ? '250px' : '0')}; // 사이드바가 열리면 250px 마진
   transition: margin-left 0.3s ease-in-out; // 부드러운 전환 효과
 `;
 
-// 사이드바 열기 버튼이 위치할 컨테이너
+// 사이드바 열기 버튼 컨테이너 스타일
 const OpenButtonContainer = styled.div`
   position: fixed;
   top: 10px;
