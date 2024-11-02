@@ -66,8 +66,8 @@ const SidebarContainer = styled(Box)<{ isOpen: boolean }>`
 `;
 
 const Divider = styled.hr`
-  width: 80%;
+  width: 90%;
   border: 0;
   border-top: 1px solid white;
-  margin: 16px 0;
+  margin: 20px 0;
 `;
