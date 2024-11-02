@@ -12,14 +12,14 @@ const MainPage = () => {
   const [messages, setMessages] = useState<string[]>([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isSidebarOpen, setSidebarOpen] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 추가
-  const [userInfo, setUserInfo] = useState({ name: "", email: "" }); // 사용자 정보 상태 추가
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userInfo, setUserInfo] = useState({ name: "", email: "" });
 
   useEffect(() => {
     const kakaoToken = localStorage.getItem("kakaoToken");
     if (kakaoToken) {
       setIsLoggedIn(true);
-      fetchUserInfo(kakaoToken); // 토큰이 있으면 사용자 정보 가져오기
+      fetchUserInfo(kakaoToken);
     }
   }, []);
 
@@ -30,12 +30,17 @@ const MainPage = () => {
     }
   };
 
+  // 새로운 메시지가 추가될 때 페이지를 가장 아래로 스크롤
+  useEffect(() => {
+    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+  }, [messages]);
+
   const toggleSidebar = () => {
     setSidebarOpen((prev) => !prev);
   };
 
   const handleKakaoLogin = () => {
-    window.location.href = KAKAO_AUTH_URL; // 카카오 로그인 페이지로 이동
+    window.location.href = KAKAO_AUTH_URL;
   };
 
   const fetchUserInfo = async (token: string) => {
@@ -104,8 +109,8 @@ const SidebarWrapper = styled.div<{ isOpen: boolean }>`
   width: ${({ isOpen }) => (isOpen ? "250px" : "0")};
   overflow: hidden;
   transition: width 0.3s ease-in-out;
-  background-color: #f0f0f0; // 사이드바 배경 색상 설정
-  z-index: 1000; // 사이드바가 상단에 표시되도록 설정
+  background-color: #f0f0f0;
+  z-index: 1000;
 `;
 
 // Wrapper 컴포넌트 스타일

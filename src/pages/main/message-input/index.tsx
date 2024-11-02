@@ -1,9 +1,7 @@
-// message-input.tsx
-
 import { Box, Textarea, IconButton } from "@chakra-ui/react";
 import { ArrowUpIcon } from "@chakra-ui/icons";
 import styled from "@emotion/styled";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 
 interface MessageInputProps {
   inputMessage: string;
@@ -17,28 +15,42 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   onSendMessage,
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [response, setResponse] = useState(null);
+  const baseURL = import.meta.env.VITE_BASE_URL; // baseURL 가져오기
+  console.log("baseURL:", baseURL);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setInputMessage(e.target.value); // 입력된 텍스트 상태 업데이트
-    autoResize(); // 글자 수가 많아질 때 입력창 자동 조정
+    setInputMessage(e.target.value);
+    autoResize();
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      onSendMessage(); // 엔터 키로 메시지 전송
+      onSendMessage();
     }
   };
 
   const autoResize = () => {
     if (textareaRef.current) {
-      textareaRef.current.style.height = "auto"; // 높이 초기화
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // 내용에 맞춰 높이 조정
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
   };
 
   useEffect(() => {
-    autoResize(); // 초기 렌더링 시 높이 조정
+    // baseURL을 사용하여 백엔드에서 데이터 가져오기
+    fetch(`${baseURL}/api/test`)
+      .then((res) => res.json())
+      .then((data) => {
+        setResponse(data);
+        console.log("Fetched data:", data); // 받은 데이터 콘솔에 출력
+      })
+      .catch((error) => console.error("Error fetching data:", error));
+  }, [baseURL]);
+
+  useEffect(() => {
+    autoResize();
   }, [inputMessage]);
 
   return (
@@ -50,7 +62,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           placeholder="Type a message..."
-          rows={1} // 기본 높이 설정
+          rows={1}
         />
         <FixedIconButton
           aria-label="Send message"
@@ -59,7 +71,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
           variant="ghost"
           size="md"
           isRound
-          onClick={onSendMessage} // 전송 버튼 클릭 시 메시지 전송 함수 호출
+          onClick={onSendMessage}
         />
       </TextareaWrapper>
     </MessageInputContainer>
@@ -93,7 +105,7 @@ const StyledTextarea = styled(Textarea)`
   outline: none;
   width: 100%;
   font-size: 16px;
-  padding-right: 40px; // 아이콘과의 간격을 확보
+  padding-right: 40px;
   resize: none;
   overflow: hidden;
   max-height: 200px;
@@ -104,15 +116,14 @@ const StyledTextarea = styled(Textarea)`
   }
   &:focus {
     outline: none;
-    box-shadow: none; // 포커스 시 파란색 테두리 제거
+    box-shadow: none;
   }
 `;
 
-// 아이콘 버튼을 입력창 오른쪽 아래에 고정
 const FixedIconButton = styled(IconButton)`
   position: absolute;
   right: -10px;
   bottom: -5px;
   background-color: #d7d7d7;
-  z-index: 10; // 아이콘이 입력창 위에 위치하도록 설정
+  z-index: 10;
 `;

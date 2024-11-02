@@ -1,9 +1,9 @@
 // sidebar.tsx
 
 import { Box, IconButton, Flex } from "@chakra-ui/react";
-import { ArrowForwardIcon, ArrowBackIcon } from "@chakra-ui/icons"; // 화살표 아이콘 사용
+import { ArrowForwardIcon, ArrowBackIcon } from "@chakra-ui/icons";
 import styled from "@emotion/styled";
-import knuLogo from "@/assets/knuLogo.svg"; // 경북대 로고 이미지 가져오기
+import knuLogo from "@/assets/knuLogo.svg";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -56,7 +56,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   );
 };
 
-const SidebarContainer = styled(Box)<{ isOpen: boolean }>`
+// isOpen 속성을 DOM에 전달하지 않도록 처리
+const SidebarContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "isOpen",
+})<{ isOpen: boolean }>`
   width: 340px;
   height: 100vh;
   background-color: #fcb9aa;
@@ -81,7 +84,7 @@ const ToggleButton = styled(IconButton)`
   border-radius: 50%;
   width: 50px;
   height: 50px;
-  transition: background-color 0.2s, transform 0.2s; // 호버 시 부드러운 효과 추가
+  transition: background-color 0.2s, transform 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -91,8 +94,8 @@ const ToggleButton = styled(IconButton)`
   }
 
   &:hover {
-    background-color: #e0a89b; // 살짝 어두운 색으로 호버 효과
-    transform: translateY(-50%) scale(1.1); // 호버 시 버튼 확대
+    background-color: #e0a89b;
+    transform: translateY(-50%) scale(1.1);
   }
 `;
 
