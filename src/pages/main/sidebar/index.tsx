@@ -60,7 +60,7 @@ const SidebarContainer = styled(Box)<{ isOpen: boolean }>`
   left: ${({ isOpen }) =>
     isOpen ? "0" : "-340px"}; // 열림/닫힘 상태에 따라 사이드바 위치 변경
   transition: left 0.5s ease-in-out; // 부드러운 애니메이션 효과
-  z-index: 1000;
+  z-index: 10000;
   text-align: center; // 모든 텍스트 가운데 정렬
   padding-top: 16px;
 `;
