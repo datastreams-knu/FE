@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import { MessageInput } from "./message-input";
 import { MessageList } from "./message-list";
 import { Sidebar } from "./sidebar";
-import { IconButton, Button } from "@chakra-ui/react";
-import { HamburgerIcon } from "@chakra-ui/icons";
+import { Button } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import axios from "axios";
 
@@ -63,17 +62,6 @@ const MainPage = () => {
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       </SidebarWrapper>
 
-      {!isSidebarOpen && (
-        <OpenButtonContainer>
-          <IconButton
-            aria-label="Open sidebar"
-            icon={<HamburgerIcon />}
-            onClick={toggleSidebar}
-            size="lg"
-          />
-        </OpenButtonContainer>
-      )}
-
       <Wrapper>
         <Header>
           {!isLoggedIn ? (
@@ -125,14 +113,6 @@ const Wrapper = styled.div`
   padding: 20px;
   margin-left: 0;
   transition: margin-left 0.3s ease-in-out;
-`;
-
-// 사이드바 열기 버튼 컨테이너 스타일
-const OpenButtonContainer = styled.div`
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  z-index: 1001;
 `;
 
 // 헤더 스타일 (카카오 로그인 버튼을 위한 상단 영역)
