@@ -15,7 +15,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   onSendMessage,
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [response, setResponse] = useState(null);
+  const [_response, setResponse] = useState(null);
   const baseURL = import.meta.env.VITE_BASE_URL; // baseURL 가져오기
   console.log("baseURL:", baseURL);
 
