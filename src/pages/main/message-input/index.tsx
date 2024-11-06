@@ -2,6 +2,7 @@ import { Box, Textarea, IconButton } from "@chakra-ui/react";
 import { ArrowUpIcon } from "@chakra-ui/icons";
 import styled from "@emotion/styled";
 import { useRef, useEffect, useState } from "react";
+import axios from "axios";
 
 interface MessageInputProps {
   inputMessage: string;
@@ -39,14 +40,17 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   };
 
   useEffect(() => {
-    // baseURL을 사용하여 백엔드에서 데이터 가져오기
-    fetch(`${baseURL}/api/test`)
-      .then((res) => res.json())
-      .then((data) => {
-        setResponse(data);
-        console.log("Fetched data:", data); // 받은 데이터 콘솔에 출력
-      })
-      .catch((error) => console.error("Error fetching data:", error));
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`${baseURL}/api/test`);
+        setResponse(res.data);
+        console.log("Fetched data:", res.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
   }, [baseURL]);
 
   useEffect(() => {
