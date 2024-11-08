@@ -111,8 +111,8 @@ const StyledTextarea = styled(Textarea)`
   font-size: 16px;
   padding-right: 40px;
   resize: none;
-  overflow: hidden;
-  max-height: 200px;
+  overflow-y: auto; // 스크롤바 추가
+  max-height: 200px; // 최대 높이 설정
   min-height: 36px;
   line-height: 1.5;
   ::placeholder {
