@@ -3,6 +3,7 @@ import { MessageInput } from "./message-input";
 import { MessageList } from "./message-list";
 import { Sidebar } from "./sidebar";
 import styled from "@emotion/styled";
+import tutorial from "@/assets/tutorial.svg";
 
 const MainPage = () => {
   const [messages, setMessages] = useState<string[]>([]);
@@ -32,7 +33,13 @@ const MainPage = () => {
       </SidebarWrapper>
 
       <Wrapper>
-        <MessageList messages={messages} />
+        {messages.length === 0 ? (
+          <TutorialImageWrapper>
+            <img src={tutorial} alt="튜토리얼 이미지" />
+          </TutorialImageWrapper>
+        ) : (
+          <MessageList messages={messages} />
+        )}
         <MessageInput
           inputMessage={inputMessage}
           setInputMessage={setInputMessage}
@@ -63,4 +70,34 @@ const Wrapper = styled.div`
   padding: 20px;
   margin-left: 0;
   transition: margin-left 0.3s ease-in-out;
+  position: relative; // 자식 요소인 TutorialImageWrapper의 absolute 위치 조정을 위해 부모 요소를 relative로 설정
+  height: 100vh; // 전체 화면 높이 차지
+`;
+
+// TutorialImageWrapper 스타일 컴포넌트
+const TutorialImageWrapper = styled.div`
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%; // 부모의 너비를 모두 사용
+
+  img {
+    max-width: 100%;
+    max-height: 400px; // 기본적으로 화면에 잘 맞게 조정
+    object-fit: contain;
+
+    @media (max-width: 768px) {
+      max-width: 90vw; // 모바일에서 이미지가 부모 요소에 거의 꽉 차게
+      object-fit: contain; // 이미지가 잘리지 않고 꽉 차게 보이도록 설정
+    }
+
+    @media (max-width: 480px) {
+      max-width: 80vw; // 화면의 대부분을 차지하도록 설정
+      object-fit: contain; // 이미지가 잘리지 않고 꽉 차게 보이도록 설정
+    }
+  }
 `;

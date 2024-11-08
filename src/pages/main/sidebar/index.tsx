@@ -79,7 +79,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                 경북대 컴퓨터학부
               </p>
               <p style={{ fontSize: "24px", fontWeight: "bold" }}>
-                학사 정보 AI
+                학사 정보 챗봇
               </p>
             </Box>
             <img
@@ -212,7 +212,7 @@ const Divider = styled.hr`
 
 const Footer = styled(Box)`
   position: absolute;
-  bottom: 30px;
+  bottom: 60px;
   padding: 20px;
   font-size: 12px;
   line-height: 1.5;
