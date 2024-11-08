@@ -180,6 +180,7 @@ const ToggleButton = styled(IconButton)`
   display: flex;
   align-items: center;
   justify-content: center;
+  opacity: 0.6;
 
   &::before {
     content: "";

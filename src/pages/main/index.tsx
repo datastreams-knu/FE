@@ -85,6 +85,7 @@ const Wrapper = styled.div`
 
 // ContentWrapper 스타일 컴포넌트 (메시지 리스트를 포함)
 const ContentWrapper = styled.div`
+  width: 95%;
   flex: 1; // 남은 공간을 모두 차지하여 MessageInput 위에 위치
   overflow-y: auto; // 메시지 리스트가 길어지면 스크롤 가능하도록 설정
   padding-bottom: 80px; // 메시지 입력창 공간 확보
