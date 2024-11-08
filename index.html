@@ -1,10 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/src/assets/tapLogo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- 페이지 제목 -->
     <title>경북대학교 컴퓨터학부 챗봇</title>
+
+    <!-- 검색 엔진에서 사용할 페이지 설명 -->
+    <meta
+      name="description"
+      content="경북대학교 컴퓨터학부 학사 정보 및 AI 챗봇 서비스. 학과 관련 문의사항을 챗봇과 대화로 해결하세요."
+    />
+
+    <!-- Open Graph / Facebook 메타 태그 -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.knu-chatbot.site" />
+    <meta property="og:title" content="경북대학교 컴퓨터학부 챗봇" />
+    <meta
+      property="og:description"
+      content="경북대학교 컴퓨터학부 학사 정보 및 AI 챗봇 서비스. 학과 관련 정보를 쉽게 확인하고, 챗봇을 통해 답변을 받아보세요."
+    />
+    <meta
+      property="og:image"
+      content="https://www.knu-chatbot.site/src/assets/tapLogo.svg"
+    />
+
+    <!-- Twitter 메타 태그 -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://www.knu-chatbot.site" />
+    <meta property="twitter:title" content="경북대학교 컴퓨터학부 챗봇" />
+    <meta
+      property="twitter:description"
+      content="경북대학교 컴퓨터학부 학사 정보 및 AI 챗봇 서비스. 학과 관련 문의사항을 챗봇과 대화로 해결하세요."
+    />
+    <meta
+      property="twitter:image"
+      content="https://www.knu-chatbot.site/src/assets/tapLogo.svg"
+    />
+
+    <!-- 구조화된 데이터 (JSON-LD) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "경북대학교 컴퓨터학부 챗봇",
+        "url": "https://www.knu-chatbot.site",
+        "logo": "https://www.knu-chatbot.site/src/assets/tapLogo.svg",
+        "description": "경북대학교 컴퓨터학부 학사 정보 및 AI 챗봇 서비스. 학과 관련 문의사항을 챗봇과 대화로 해결하세요.",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+82-53-950-5550",
+          "contactType": "customer service",
+          "areaServed": "KR",
+          "availableLanguage": ["Korean", "English"]
+        }
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
