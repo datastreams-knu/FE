@@ -8,12 +8,14 @@ interface MessageInputProps {
   inputMessage: string;
   setInputMessage: (message: string) => void;
   onSendMessage: () => void;
+  setInputHeight: (height: number) => void; // 추가된 prop
 }
 
 export const MessageInput: React.FC<MessageInputProps> = ({
   inputMessage,
   setInputMessage,
   onSendMessage,
+  setInputHeight, // 추가된 prop
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const baseURL = import.meta.env.VITE_BASE_URL; // baseURL 가져오기
@@ -56,6 +58,9 @@ export const MessageInput: React.FC<MessageInputProps> = ({
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+
+      // 입력창의 높이를 부모 컴포넌트에 전달
+      setInputHeight(textareaRef.current.scrollHeight);
     }
   };
 
@@ -106,7 +111,7 @@ const MessageInputContainer = styled(Box)`
 const TextareaWrapper = styled.div`
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
 `;
 
 const StyledTextarea = styled(Textarea)`
@@ -115,12 +120,20 @@ const StyledTextarea = styled(Textarea)`
   outline: none;
   width: 100%;
   font-size: 16px;
-  padding-right: 40px;
+  padding-right: 45px; /* 전송 버튼과의 간격을 넓히기 위해 여유 공간 추가 */
   resize: none;
-  overflow-y: auto; // 스크롤바 추가
-  max-height: 200px; // 최대 높이 설정
+  overflow-y: auto;
+  max-height: 180px; /* 높이 유지 */
   min-height: 36px;
   line-height: 1.5;
+  scrollbar-width: thin; /* 스크롤바의 너비를 줄임 (Firefox 지원) */
+  &::-webkit-scrollbar {
+    width: 6px; /* 스크롤바의 너비를 줄임 (Chrome, Safari 지원) */
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #ccc; /* 스크롤바의 색상 */
+    border-radius: 10px; /* 스크롤바의 모서리를 둥글게 */
+  }
   ::placeholder {
     color: #ccc;
   }
@@ -132,8 +145,7 @@ const StyledTextarea = styled(Textarea)`
 
 const FixedIconButton = styled(IconButton)`
   position: absolute;
-  right: -10px;
-  bottom: -5px;
+  right: 15px; /* 버튼을 입력창 안쪽에 정확하게 배치 */
   background-color: #d7d7d7;
   z-index: 10;
 `;

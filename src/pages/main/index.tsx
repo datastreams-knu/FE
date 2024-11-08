@@ -9,60 +9,71 @@ const MainPage = () => {
   const [messages, setMessages] = useState<string[]>([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-  const messageListRef = useRef<HTMLDivElement>(null);
+  const [inputHeight, setInputHeight] = useState(36); // 메시지 입력창 높이 상태 추가
+  const pageRef = useRef<HTMLDivElement>(null);
 
   const handleSendMessage = () => {
     if (inputMessage.trim()) {
       setMessages((prev) => [inputMessage, ...prev]);
-      setInputMessage("");
+      setInputMessage(""); // 상태가 업데이트된 후에 입력창 초기화
     }
   };
 
-  // 메시지가 추가될 때 메시지 리스트를 아래로 스크롤
+  // 메시지가 추가될 때 페이지를 가장 아래로 스크롤
   useEffect(() => {
-    if (messageListRef.current) {
-      messageListRef.current.scrollTo({
-        top: messageListRef.current.scrollHeight,
+    if (pageRef.current) {
+      pageRef.current.scrollTo({
+        top: pageRef.current.scrollHeight,
         behavior: "smooth",
       });
     }
-  }, [messages]);
+  }, [messages, inputHeight]); // inputHeight 추가하여 메시지 입력창 높이 변경에 따른 스크롤 업데이트
 
   const toggleSidebar = () => {
     setSidebarOpen((prev) => !prev);
   };
 
   return (
-    <>
+    <PageWrapper ref={pageRef}>
       <SidebarWrapper isOpen={isSidebarOpen}>
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       </SidebarWrapper>
 
-      <Wrapper>
-        <ContentWrapper ref={messageListRef}>
-          {messages.length === 0 ? (
-            <TutorialImageWrapper>
-              <img src={tutorial} alt="튜토리얼 이미지" />
-            </TutorialImageWrapper>
-          ) : (
+      <ContentWrapper inputHeight={inputHeight}>
+        {messages.length === 0 ? (
+          <TutorialImageWrapper>
+            <img src={tutorial} alt="튜토리얼 이미지" />
+          </TutorialImageWrapper>
+        ) : (
+          <MessageListWrapper>
             <MessageList messages={messages} />
-          )}
-        </ContentWrapper>
+          </MessageListWrapper>
+        )}
         <MessageInputWrapper>
           <MessageInput
             inputMessage={inputMessage}
             setInputMessage={setInputMessage}
             onSendMessage={handleSendMessage}
+            setInputHeight={setInputHeight} // 입력창 높이 업데이트 함수 전달
           />
         </MessageInputWrapper>
-      </Wrapper>
-    </>
+      </ContentWrapper>
+    </PageWrapper>
   );
 };
 
 export default MainPage;
 
-// SidebarWrapper 스타일 컴포넌트
+// 전체 페이지 래퍼 (스크롤 가능한 요소)
+const PageWrapper = styled.div`
+  position: relative;
+  height: 100vh;
+  overflow-y: auto; // 전체 페이지에 스크롤이 생긴도록 설정
+  display: flex;
+  flex-direction: column;
+`;
+
+// SidebarWrapper 스타일 컨텐츠
 const SidebarWrapper = styled.div<{ isOpen: boolean }>`
   position: fixed;
   left: 0;
@@ -75,23 +86,30 @@ const SidebarWrapper = styled.div<{ isOpen: boolean }>`
   z-index: 1000;
 `;
 
-// Wrapper 컴포넌트 스타일
-const Wrapper = styled.div`
-  position: relative;
-  height: 100vh; // 전체 화면 높이 차지
+// ContentWrapper 스타일 컨텐츠
+const ContentWrapper = styled.div<{ inputHeight: number }>`
+  flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: ${({ inputHeight }) =>
+    Math.min(
+      inputHeight - 40,
+      120
+    )}px; // 메시지 입력창 높이에 따른 여백 동적 조정
+  transition: margin-left 0.3s ease-in-out;
 `;
 
-// ContentWrapper 스타일 컴포넌트 (메시지 리스트를 포함)
-const ContentWrapper = styled.div`
-  width: 95%;
-  flex: 1; // 남은 공간을 모두 차지하여 MessageInput 위에 위치
-  overflow-y: auto; // 메시지 리스트가 길어지면 스크롤 가능하도록 설정
-  padding-bottom: 80px; // 메시지 입력창 공간 확보
+// MessageListWrapper 스타일 컨텐츠 (메시지 리스트를 포함)
+const MessageListWrapper = styled.div`
+  width: 100%;
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-bottom: 20px; // 메시지 입력창과 메시지 리스트 간 여백 추가
 `;
 
-// TutorialImageWrapper 스타일 컴포넌트
+// TutorialImageWrapper 스타일 컨텐츠
 const TutorialImageWrapper = styled.div`
   position: absolute;
   top: 40%;
@@ -119,13 +137,11 @@ const TutorialImageWrapper = styled.div`
   }
 `;
 
-// MessageInputWrapper 스타일 컴포넌트
+// MessageInputWrapper 스타일 컨텐츠
 const MessageInputWrapper = styled.div`
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
   width: 90%;
   max-width: 800px;
-  z-index: 100;
+  margin-top: 20px;
+  position: relative;
+  margin-bottom: 20px; // 메시지 입력창 아래 여백 추가
 `;
