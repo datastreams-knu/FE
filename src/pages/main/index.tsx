@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { MessageInput } from "./message-input";
 import { MessageList } from "./message-list";
 import { Sidebar } from "./sidebar";
@@ -9,6 +9,7 @@ const MainPage = () => {
   const [messages, setMessages] = useState<string[]>([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const messageListRef = useRef<HTMLDivElement>(null);
 
   const handleSendMessage = () => {
     if (inputMessage.trim()) {
@@ -17,9 +18,14 @@ const MainPage = () => {
     }
   };
 
-  // 새로운 메시지가 추가될 때 페이지를 가장 아래로 스크롤
+  // 메시지가 추가될 때 메시지 리스트를 아래로 스크롤
   useEffect(() => {
-    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    if (messageListRef.current) {
+      messageListRef.current.scrollTo({
+        top: messageListRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   }, [messages]);
 
   const toggleSidebar = () => {
@@ -33,18 +39,22 @@ const MainPage = () => {
       </SidebarWrapper>
 
       <Wrapper>
-        {messages.length === 0 ? (
-          <TutorialImageWrapper>
-            <img src={tutorial} alt="튜토리얼 이미지" />
-          </TutorialImageWrapper>
-        ) : (
-          <MessageList messages={messages} />
-        )}
-        <MessageInput
-          inputMessage={inputMessage}
-          setInputMessage={setInputMessage}
-          onSendMessage={handleSendMessage}
-        />
+        <ContentWrapper ref={messageListRef}>
+          {messages.length === 0 ? (
+            <TutorialImageWrapper>
+              <img src={tutorial} alt="튜토리얼 이미지" />
+            </TutorialImageWrapper>
+          ) : (
+            <MessageList messages={messages} />
+          )}
+        </ContentWrapper>
+        <MessageInputWrapper>
+          <MessageInput
+            inputMessage={inputMessage}
+            setInputMessage={setInputMessage}
+            onSendMessage={handleSendMessage}
+          />
+        </MessageInputWrapper>
       </Wrapper>
     </>
   );
@@ -67,11 +77,17 @@ const SidebarWrapper = styled.div<{ isOpen: boolean }>`
 
 // Wrapper 컴포넌트 스타일
 const Wrapper = styled.div`
-  padding: 20px;
-  margin-left: 0;
-  transition: margin-left 0.3s ease-in-out;
-  position: relative; // 자식 요소인 TutorialImageWrapper의 absolute 위치 조정을 위해 부모 요소를 relative로 설정
+  position: relative;
   height: 100vh; // 전체 화면 높이 차지
+  display: flex;
+  flex-direction: column;
+`;
+
+// ContentWrapper 스타일 컴포넌트 (메시지 리스트를 포함)
+const ContentWrapper = styled.div`
+  flex: 1; // 남은 공간을 모두 차지하여 MessageInput 위에 위치
+  overflow-y: auto; // 메시지 리스트가 길어지면 스크롤 가능하도록 설정
+  padding-bottom: 80px; // 메시지 입력창 공간 확보
 `;
 
 // TutorialImageWrapper 스타일 컴포넌트
@@ -83,21 +99,32 @@ const TutorialImageWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%; // 부모의 너비를 모두 사용
+  width: 100%;
 
   img {
     max-width: 100%;
-    max-height: 400px; // 기본적으로 화면에 잘 맞게 조정
+    max-height: 400px;
     object-fit: contain;
 
     @media (max-width: 768px) {
-      max-width: 90vw; // 모바일에서 이미지가 부모 요소에 거의 꽉 차게
-      object-fit: contain; // 이미지가 잘리지 않고 꽉 차게 보이도록 설정
+      max-width: 90vw;
+      object-fit: contain;
     }
 
     @media (max-width: 480px) {
-      max-width: 80vw; // 화면의 대부분을 차지하도록 설정
-      object-fit: contain; // 이미지가 잘리지 않고 꽉 차게 보이도록 설정
+      max-width: 80vw;
+      object-fit: contain;
     }
   }
+`;
+
+// MessageInputWrapper 스타일 컴포넌트
+const MessageInputWrapper = styled.div`
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 800px;
+  z-index: 100;
 `;

@@ -1,7 +1,7 @@
 import { Box, Textarea, IconButton } from "@chakra-ui/react";
 import { ArrowUpIcon } from "@chakra-ui/icons";
 import styled from "@emotion/styled";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import axios from "axios";
 
 interface MessageInputProps {
@@ -16,7 +16,6 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   onSendMessage,
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [_response, setResponse] = useState(null);
   const baseURL = import.meta.env.VITE_BASE_URL; // baseURL 가져오기
   console.log("baseURL:", baseURL);
 
@@ -25,10 +24,32 @@ export const MessageInput: React.FC<MessageInputProps> = ({
     autoResize();
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
+      await handleSendMessage();
+    }
+  };
+
+  const handleSendMessage = async () => {
+    if (inputMessage.trim()) {
+      // 메시지를 리스트에 추가하는 작업은 기존과 같이 수행
       onSendMessage();
+
+      // 메시지를 백엔드 서버로 전송하는 API 호출
+      try {
+        const response = await axios.post(`${baseURL}/api/front-ai-response`, {
+          question: inputMessage,
+        });
+
+        // 서버 응답을 콘솔에 출력
+        console.log("AI Response:", response.data.response);
+      } catch (error) {
+        console.error("Error while sending message:", error);
+      }
+
+      // 메시지 입력창 초기화
+      setInputMessage("");
     }
   };
 
@@ -38,20 +59,6 @@ export const MessageInput: React.FC<MessageInputProps> = ({
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(`${baseURL}/api/test`);
-        setResponse(res.data);
-        console.log("Fetched data:", res.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, [baseURL]);
 
   useEffect(() => {
     autoResize();
@@ -75,7 +82,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
           variant="ghost"
           size="md"
           isRound
-          onClick={onSendMessage}
+          onClick={handleSendMessage}
         />
       </TextareaWrapper>
     </MessageInputContainer>
