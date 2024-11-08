@@ -8,14 +8,14 @@ interface MessageInputProps {
   inputMessage: string;
   setInputMessage: (message: string) => void;
   onSendMessage: () => void;
-  setInputHeight: (height: number) => void; // 추가된 prop
+  setInputHeight: (height: number) => void;
 }
 
 export const MessageInput: React.FC<MessageInputProps> = ({
   inputMessage,
   setInputMessage,
   onSendMessage,
-  setInputHeight, // 추가된 prop
+  setInputHeight,
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const baseURL = import.meta.env.VITE_BASE_URL; // baseURL 가져오기
