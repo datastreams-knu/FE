@@ -7,7 +7,7 @@ import axios from "axios";
 interface MessageInputProps {
   inputMessage: string;
   setInputMessage: (message: string) => void;
-  onSendMessage: () => void;
+  onSendMessage: (message: string, isAIResponse?: boolean) => void;
   setInputHeight: (height: number) => void;
 }
 
@@ -34,8 +34,8 @@ export const MessageInput: React.FC<MessageInputProps> = ({
 
   const handleSendMessage = async () => {
     if (inputMessage.trim()) {
-      // 메시지를 리스트에 추가하는 작업은 기존과 같이 수행
-      onSendMessage();
+      // 사용자 메시지를 리스트에 추가
+      onSendMessage(inputMessage);
 
       // 메시지를 백엔드 서버로 전송하는 API 호출
       try {
@@ -43,8 +43,8 @@ export const MessageInput: React.FC<MessageInputProps> = ({
           question: inputMessage,
         });
 
-        // 서버 응답을 콘솔에 출력
-        console.log("AI Response:", response.data.response);
+        // 서버 응답 메시지를 리스트에 추가
+        onSendMessage(response.data.response, true);
       } catch (error) {
         console.error("Error while sending message:", error);
       }

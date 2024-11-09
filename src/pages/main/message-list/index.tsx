@@ -19,7 +19,7 @@ export const MessageList: React.FC<MessageListProps> = ({ messages }) => {
   return (
     <MessageListContainer ref={messageListRef}>
       {messages.map((message, index) => (
-        <MessageBox key={index}>
+        <MessageBox key={index} isAIResponse={index % 2 !== 0}>
           <Text>{message}</Text>
         </MessageBox>
       ))}
@@ -40,12 +40,18 @@ const MessageListContainer = styled(Box)`
 `;
 
 // 메시지 박스 스타일 (동적 길이, 우측 정렬)
-const MessageBox = styled(Box)`
+interface MessageBoxProps {
+  isAIResponse: boolean;
+}
+
+const MessageBox = styled(Box)<MessageBoxProps>`
   margin: 5px 0;
   padding: 10px;
-  background-color: #f0f0f0;
+  background-color: ${({ isAIResponse }) =>
+    isAIResponse ? "#e0ffe0" : "#f0f0f0"};
   border-radius: 8px;
   max-width: 80%; // 메시지 박스의 최대 너비 설정 (화면의 80%)
-  align-self: flex-end; // 우측 정렬
+  align-self: ${({ isAIResponse }) =>
+    isAIResponse ? "flex-start" : "flex-end"};
   word-wrap: break-word; // 긴 텍스트가 박스를 넘지 않도록 자동 줄바꿈
 `;
