@@ -3,6 +3,7 @@ import { MessageInput } from "./message-input";
 import { MessageList } from "./message-list";
 import { Sidebar } from "./sidebar";
 import styled from "@emotion/styled";
+import { Spinner, Box, Flex, Text } from "@chakra-ui/react";
 import tutorial from "@/assets/tutorial.svg";
 
 const MainPage = () => {
@@ -10,18 +11,18 @@ const MainPage = () => {
   const [inputMessage, setInputMessage] = useState("");
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [inputHeight, setInputHeight] = useState(36);
-  const [loading, setLoading] = useState(false); // 로딩 상태 추가
+  const [loading, setLoading] = useState(false);
   const pageRef = useRef<HTMLDivElement>(null);
+  const bottomRef = useRef<HTMLDivElement>(null); // 스크롤 위치를 위한 ref 추가
   const baseURL = import.meta.env.VITE_BASE_URL;
 
   const handleSendMessage = async () => {
     if (inputMessage.trim() && !loading) {
-      // 로딩 중일 때는 전송을 방지
       const userMessage = inputMessage;
       setMessages((prev) => [userMessage, ...prev]);
       setInputMessage("");
 
-      setLoading(true); // 로딩 상태 활성화
+      setLoading(true);
 
       try {
         const response = await fetch(`${baseURL}/api/front-ai-response`, {
@@ -42,19 +43,17 @@ const MainPage = () => {
       } catch (error) {
         console.error("Error while sending message:", error);
       } finally {
-        setLoading(false); // 로딩 상태 비활성화
+        setLoading(false);
       }
     }
   };
 
   useEffect(() => {
-    if (pageRef.current) {
-      pageRef.current.scrollTo({
-        top: pageRef.current.scrollHeight,
-        behavior: "smooth",
-      });
+    // 메시지 또는 입력 높이에 변동이 생길 때마다 스크롤을 가장 아래로 이동
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages, inputHeight]);
+  }, [messages, inputHeight, loading]);
 
   const toggleSidebar = () => {
     setSidebarOpen((prev) => !prev);
@@ -74,19 +73,32 @@ const MainPage = () => {
         ) : (
           <MessageListWrapper>
             <MessageList messages={messages} />
-            {loading && (
-              <LoadingMessage>응답을 기다리는 중...</LoadingMessage>
-            )}{" "}
-            {/* 로딩 메시지 표시 */}
+            <div ref={bottomRef} /> {/* 스크롤이 이동할 위치를 표시 */}
           </MessageListWrapper>
         )}
+
+        <LoadingContainer loading={loading}>
+          {loading && (
+            <Flex align="center" justify="center">
+              <Spinner
+                thickness="4px"
+                speed="0.65s"
+                emptyColor="gray.200"
+                color="blue.500"
+                size="lg"
+              />
+              <LoadingText>응답을 기다리는 중...</LoadingText>
+            </Flex>
+          )}
+        </LoadingContainer>
+
         <MessageInputWrapper>
           <MessageInput
             inputMessage={inputMessage}
             setInputMessage={setInputMessage}
             onSendMessage={handleSendMessage}
             setInputHeight={setInputHeight}
-            isLoading={loading} // 로딩 상태 전달
+            isLoading={loading}
           />
         </MessageInputWrapper>
       </ContentWrapper>
@@ -96,7 +108,7 @@ const MainPage = () => {
 
 export default MainPage;
 
-// 스타일은 그대로 유지
+// 스타일 코드 업데이트
 const PageWrapper = styled.div`
   position: relative;
   height: 100vh;
@@ -132,6 +144,7 @@ const MessageListWrapper = styled.div`
   flex-grow: 1;
   overflow-y: auto;
   margin-bottom: 20px;
+  position: relative;
 `;
 
 const TutorialImageWrapper = styled.div`
@@ -161,6 +174,16 @@ const TutorialImageWrapper = styled.div`
   }
 `;
 
+const LoadingContainer = styled(Box)<{ loading: boolean }>`
+  width: 100%;
+  height: ${({ loading }) => (loading ? "60px" : "0")};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: ${({ loading }) => (loading ? "110px" : "0")};
+  transition: height 0.3s ease-in-out, padding-bottom 0.3s ease-in-out;
+`;
+
 const MessageInputWrapper = styled.div`
   width: 90%;
   max-width: 800px;
@@ -169,9 +192,8 @@ const MessageInputWrapper = styled.div`
   margin-bottom: 20px;
 `;
 
-const LoadingMessage = styled.div`
-  font-size: 14px;
-  color: #666;
-  margin-top: 10px;
-  text-align: center;
+const LoadingText = styled(Text)`
+  font-size: 16px;
+  color: #555;
+  margin-left: 12px;
 `;
