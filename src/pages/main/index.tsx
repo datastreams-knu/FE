@@ -48,11 +48,19 @@ const MainPage = () => {
     }
   };
 
-  // 로딩 중일 때만 스크롤을 가장 아래로 이동
+  // 로딩 중일 때만 5초 후 스크롤을 가장 아래로 이동
   useEffect(() => {
+    let timeoutId: number;
+
     if (loading && bottomRef.current) {
-      bottomRef.current.scrollIntoView({ behavior: "smooth" });
+      timeoutId = window.setTimeout(() => {
+        if (bottomRef.current) {
+          bottomRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 500); // 0.5초 후에 스크롤 이동
     }
+
+    return () => clearTimeout(timeoutId); // 로딩이 끝나거나 컴포넌트가 언마운트되면 타이머를 정리
   }, [loading]);
 
   const toggleSidebar = () => {
