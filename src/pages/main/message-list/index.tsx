@@ -18,11 +18,17 @@ export const MessageList: React.FC<MessageListProps> = ({ messages }) => {
 
   return (
     <MessageListContainer ref={messageListRef}>
-      {messages.map((message, index) => (
-        <MessageBox key={index}>
-          <Text>{message}</Text>
-        </MessageBox>
-      ))}
+      {messages.map((message, index) => {
+        // 뒤에서부터 번호를 매긴 index 계산
+        const reversedIndex = messages.length - index;
+        const isEven = reversedIndex % 2 === 0;
+
+        return (
+          <MessageBox key={index} isEven={isEven}>
+            <Text>{message}</Text>
+          </MessageBox>
+        );
+      })}
     </MessageListContainer>
   );
 };
@@ -39,13 +45,17 @@ const MessageListContainer = styled(Box)`
   margin: 0 auto 60px; // 중앙 정렬 및 메시지 입력창과 간격을 둠
 `;
 
-// 메시지 박스 스타일 (동적 길이, 우측 정렬)
-const MessageBox = styled(Box)`
+// 메시지 박스 스타일 (동적 길이, 정렬 위치 설정)
+const MessageBox = styled(Box)<{ isEven: boolean }>`
   margin: 5px 0;
   padding: 10px;
-  background-color: #f0f0f0;
+  background-color: ${({ isEven }) =>
+    isEven ? "#FFDFB8" : "#f0f0f0"}; // 뒤에서부터 계산한 짝수 색상 설정
   border-radius: 8px;
   max-width: 80%; // 메시지 박스의 최대 너비 설정 (화면의 80%)
-  align-self: flex-end; // 우측 정렬
+  align-self: ${({ isEven }) =>
+    isEven
+      ? "flex-start"
+      : "flex-end"}; // 뒤에서부터 계산한 짝수는 좌측, 홀수는 우측 정렬
   word-wrap: break-word; // 긴 텍스트가 박스를 넘지 않도록 자동 줄바꿈
 `;

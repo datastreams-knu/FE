@@ -48,12 +48,12 @@ const MainPage = () => {
     }
   };
 
+  // 로딩 중일 때만 스크롤을 가장 아래로 이동
   useEffect(() => {
-    // 메시지 또는 입력 높이에 변동이 생길 때마다 스크롤을 가장 아래로 이동
-    if (bottomRef.current) {
+    if (loading && bottomRef.current) {
       bottomRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages, inputHeight, loading]);
+  }, [loading]);
 
   const toggleSidebar = () => {
     setSidebarOpen((prev) => !prev);
