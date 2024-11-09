@@ -43,10 +43,21 @@ export const MessageInput: React.FC<MessageInputProps> = ({
           question: inputMessage,
         });
 
-        // 서버 응답 메시지를 리스트에 추가
-        onSendMessage(response.data.response, true);
+        // 서버 응답 메시지를 리스트에 추가 (AI 응답 메시지만 리스트에 추가)
+        if (response.data && response.data.response) {
+          onSendMessage(response.data.response, true);
+        } else {
+          onSendMessage(
+            "죄송합니다, 현재 오류가 있습니다. 잠시 후 다시 질문해보세요",
+            true
+          );
+        }
       } catch (error) {
         console.error("Error while sending message:", error);
+        onSendMessage(
+          "죄송합니다, 현재 오류가 있습니다. 잠시 후 다시 질문해보세요",
+          true
+        );
       }
 
       // 메시지 입력창 초기화
