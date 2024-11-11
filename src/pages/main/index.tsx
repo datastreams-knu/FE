@@ -38,10 +38,23 @@ const MainPage = () => {
         }
 
         const data = await response.json();
-        const aiResponse = data.response;
-        setMessages((prev) => [aiResponse, ...prev]);
+
+        const formattedResponse = [
+          data.response.answer,
+          "",
+          data.response.references,
+          "",
+          data.response.disclaimer,
+        ].join("\n");
+
+        setMessages((prev) => [formattedResponse, ...prev]);
       } catch (error) {
         console.error("Error while sending message:", error);
+        // 에러 발생 시 에러 메시지를 메시지 리스트에 추가
+        setMessages((prev) => [
+          "서버에 문제가 있습니다. 잠시 후 다시 시도해주세요!",
+          ...prev,
+        ]);
       } finally {
         setLoading(false);
       }
