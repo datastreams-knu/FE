@@ -16,6 +16,15 @@ const MainPage = () => {
   const bottomRef = useRef<HTMLDivElement>(null); // 스크롤 위치를 위한 ref 추가
   const baseURL = import.meta.env.VITE_BASE_URL;
 
+  interface ResponseData {
+    response: {
+      answer: string;
+      references: string;
+      disclaimer: string;
+      images?: string[]; // optional field
+    };
+  }
+
   const handleSendMessage = async () => {
     if (inputMessage.trim() && !loading) {
       const userMessage = inputMessage;
@@ -37,20 +46,19 @@ const MainPage = () => {
           throw new Error("Failed to fetch AI response");
         }
 
-        const data = await response.json();
+        const data: ResponseData = await response.json();
 
-        const formattedResponse = [
-          data.response.answer,
-          "",
-          data.response.references,
-          "",
-          data.response.disclaimer,
-        ].join("\n");
+        const images = data.response.images?.length
+          ? `\n\n${data.response.images
+              .map((url: string) => `<img src="${url}" width="300" />`)
+              .join("\n")}`
+          : "";
+
+        const formattedResponse = `${data.response.answer}\n\n${data.response.references}\n\n${data.response.disclaimer}${images}`;
 
         setMessages((prev) => [formattedResponse, ...prev]);
       } catch (error) {
         console.error("Error while sending message:", error);
-        // 에러 발생 시 에러 메시지를 메시지 리스트에 추가
         setMessages((prev) => [
           "서버에 문제가 있습니다. 잠시 후 다시 시도해주세요!",
           ...prev,
@@ -105,7 +113,7 @@ const MainPage = () => {
                 thickness="4px"
                 speed="0.65s"
                 emptyColor="gray.200"
-                color="blue.500"
+                color="#fcb9aa"
                 size="lg"
               />
               <LoadingText>응답을 기다리는 중...</LoadingText>
