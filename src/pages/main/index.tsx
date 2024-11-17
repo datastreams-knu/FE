@@ -4,7 +4,11 @@ import { MessageList } from "./message-list";
 import { Sidebar } from "./sidebar";
 import styled from "@emotion/styled";
 import { Spinner, Box, Flex, Text, Button } from "@chakra-ui/react";
-import tutorial from "@/assets/tutorial.svg";
+import tutorial1 from "@/assets/tutorial1.svg";
+import tutorial2 from "@/assets/tutorial2.svg";
+import tutorial3 from "@/assets/tutorial3.svg";
+import tutorial4 from "@/assets/tutorial4.svg";
+import tutorial5 from "@/assets/tutorial5.svg";
 
 const MainPage = () => {
   const [messages, setMessages] = useState<string[]>([]);
@@ -12,6 +16,7 @@ const MainPage = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [inputHeight, setInputHeight] = useState(36);
   const [loading, setLoading] = useState(false);
+  const [tutorialImage, setTutorialImage] = useState<string>(""); // 랜덤 이미지 상태 추가
   const pageRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const baseURL = import.meta.env.VITE_BASE_URL;
@@ -67,6 +72,20 @@ const MainPage = () => {
     }
   };
 
+  // 페이지 접속 시 랜덤 이미지 선택
+  useEffect(() => {
+    const tutorialImages = [
+      tutorial1,
+      tutorial2,
+      tutorial3,
+      tutorial4,
+      tutorial5,
+    ];
+    const randomImage =
+      tutorialImages[Math.floor(Math.random() * tutorialImages.length)];
+    setTutorialImage(randomImage);
+  }, []);
+
   // 로딩 중일 때만 0.5초 후 스크롤을 가장 아래로 이동
   useEffect(() => {
     let timeoutId: number;
@@ -101,7 +120,7 @@ const MainPage = () => {
               flexDirection="column"
               alignItems="center"
             >
-              <img src={tutorial} alt="튜토리얼 이미지" />
+              <img src={tutorialImage} alt="Tutorial" />
               <Box
                 display="flex"
                 flexWrap="wrap"
