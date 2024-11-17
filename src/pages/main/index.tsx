@@ -3,7 +3,7 @@ import { MessageInput } from "./message-input";
 import { MessageList } from "./message-list";
 import { Sidebar } from "./sidebar";
 import styled from "@emotion/styled";
-import { Spinner, Box, Flex, Text } from "@chakra-ui/react";
+import { Spinner, Box, Flex, Text, Button } from "@chakra-ui/react";
 import tutorial from "@/assets/tutorial.svg";
 
 const MainPage = () => {
@@ -13,7 +13,7 @@ const MainPage = () => {
   const [inputHeight, setInputHeight] = useState(36);
   const [loading, setLoading] = useState(false);
   const pageRef = useRef<HTMLDivElement>(null);
-  const bottomRef = useRef<HTMLDivElement>(null); // 스크롤 위치를 위한 ref 추가
+  const bottomRef = useRef<HTMLDivElement>(null);
   const baseURL = import.meta.env.VITE_BASE_URL;
 
   interface ResponseData {
@@ -25,12 +25,10 @@ const MainPage = () => {
     };
   }
 
-  const handleSendMessage = async () => {
-    if (inputMessage.trim() && !loading) {
-      const userMessage = inputMessage;
-      setMessages((prev) => [userMessage, ...prev]);
+  const handleSendMessage = async (message: string) => {
+    if (message.trim() && !loading) {
+      setMessages((prev) => [message, ...prev]); // 메시지를 바로 추가
       setInputMessage("");
-
       setLoading(true);
 
       try {
@@ -39,7 +37,7 @@ const MainPage = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ question: userMessage }),
+          body: JSON.stringify({ question: message }),
         });
 
         if (!response.ok) {
@@ -69,7 +67,7 @@ const MainPage = () => {
     }
   };
 
-  // 로딩 중일 때만 5초 후 스크롤을 가장 아래로 이동
+  // 로딩 중일 때만 0.5초 후 스크롤을 가장 아래로 이동
   useEffect(() => {
     let timeoutId: number;
 
@@ -97,7 +95,63 @@ const MainPage = () => {
       <ContentWrapper inputHeight={inputHeight}>
         {messages.length === 0 ? (
           <TutorialImageWrapper>
-            <img src={tutorial} alt="튜토리얼 이미지" />
+            <Box
+              textAlign="center"
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+            >
+              <img src={tutorial} alt="튜토리얼 이미지" />
+              <Box
+                display="flex"
+                flexWrap="wrap"
+                gap={4}
+                justifyContent="center"
+                mt="6"
+                px={4}
+                maxW="800px"
+              >
+                <Button
+                  backgroundColor="#EAE6DA"
+                  _hover={{ backgroundColor: "#DDD8C6" }}
+                  onClick={() => handleSendMessage("최근 공지사항 알려줘")}
+                >
+                  최근 공지사항 알려줘
+                </Button>
+                <Button
+                  backgroundColor="#EAE6DA"
+                  _hover={{ backgroundColor: "#DDD8C6" }}
+                  onClick={() =>
+                    handleSendMessage("점심 제공하는 세미나 알려줘")
+                  }
+                >
+                  점심 제공하는 세미나 알려줘
+                </Button>
+                <Button
+                  backgroundColor="#EAE6DA"
+                  _hover={{ backgroundColor: "#DDD8C6" }}
+                  onClick={() =>
+                    handleSendMessage("컴퓨터학부 대회 정보 알려줘")
+                  }
+                >
+                  컴퓨터학부 대회 정보 알려줘
+                </Button>
+                <Button
+                  backgroundColor="#EAE6DA"
+                  _hover={{ backgroundColor: "#DDD8C6" }}
+                  onClick={() => handleSendMessage("졸업요건에 대해 알려줘")}
+                >
+                  졸업요건에 대해 알려줘
+                </Button>
+                <Button
+                  backgroundColor="#EAE6DA"
+                  _hover={{ backgroundColor: "#DDD8C6" }}
+                  onClick={() => handleSendMessage("수강신청 언제야")}
+                >
+                  수강신청 언제야
+                </Button>
+              </Box>
+            </Box>
           </TutorialImageWrapper>
         ) : (
           <MessageListWrapper>
@@ -112,7 +166,7 @@ const MainPage = () => {
               <Spinner
                 thickness="4px"
                 speed="0.65s"
-                emptyColor="gray.200"
+                emptyColor="#E8E5D9"
                 color="#fcb9aa"
                 size="lg"
               />
@@ -125,7 +179,7 @@ const MainPage = () => {
           <MessageInput
             inputMessage={inputMessage}
             setInputMessage={setInputMessage}
-            onSendMessage={handleSendMessage}
+            onSendMessage={() => handleSendMessage(inputMessage)}
             setInputHeight={setInputHeight}
             isLoading={loading}
           />
@@ -137,8 +191,9 @@ const MainPage = () => {
 
 export default MainPage;
 
-// 스타일 코드 업데이트
+// 스타일 코드
 const PageWrapper = styled.div`
+  background-color: #f3f2ec;
   position: relative;
   height: 100vh;
   overflow-y: auto;

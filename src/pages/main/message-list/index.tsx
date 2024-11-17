@@ -50,7 +50,7 @@ const MessageBox = styled(Box)<{ isEven: boolean }>`
   margin: 5px 0;
   padding: 10px;
   background-color: ${({ isEven }) =>
-    isEven ? "#FFDFB8" : "#f0f0f0"}; // 뒤에서부터 계산한 짝수 색상 설정
+    isEven ? "#FFDFB8" : "#DDD8C6"}; // 뒤에서부터 계산한 짝수 색상 설정
   border-radius: 8px;
   max-width: 80%; // 메시지 박스의 최대 너비 설정 (화면의 80%)
   align-self: ${({ isEven }) =>
