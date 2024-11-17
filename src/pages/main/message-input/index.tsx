@@ -52,7 +52,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
           value={inputMessage}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
-          placeholder="Type a message..."
+          placeholder="Type a question..."
           rows={1}
         />
         <FixedIconButton
@@ -96,7 +96,7 @@ const StyledTextarea = styled(Textarea)`
   border: none;
   outline: none;
   width: 100%;
-  font-size: 16px;
+  font-size: 22px;
   padding-right: 45px;
   resize: none;
   overflow-y: auto;

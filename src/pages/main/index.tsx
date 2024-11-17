@@ -131,6 +131,8 @@ const MainPage = () => {
                 maxW="800px"
               >
                 <Button
+                  fontSize={"2xl"}
+                  fontWeight={"medium"}
                   backgroundColor="#EAE6DA"
                   _hover={{ backgroundColor: "#DDD8C6" }}
                   onClick={() => handleSendMessage("최근 공지사항 알려줘")}
@@ -138,6 +140,8 @@ const MainPage = () => {
                   최근 공지사항 알려줘
                 </Button>
                 <Button
+                  fontSize={"2xl"}
+                  fontWeight={"medium"}
                   backgroundColor="#EAE6DA"
                   _hover={{ backgroundColor: "#DDD8C6" }}
                   onClick={() =>
@@ -147,6 +151,8 @@ const MainPage = () => {
                   점심 제공하는 세미나 알려줘
                 </Button>
                 <Button
+                  fontSize={"2xl"}
+                  fontWeight={"medium"}
                   backgroundColor="#EAE6DA"
                   _hover={{ backgroundColor: "#DDD8C6" }}
                   onClick={() =>
@@ -156,6 +162,8 @@ const MainPage = () => {
                   컴퓨터학부 대회 정보 알려줘
                 </Button>
                 <Button
+                  fontSize={"2xl"}
+                  fontWeight={"medium"}
                   backgroundColor="#EAE6DA"
                   _hover={{ backgroundColor: "#DDD8C6" }}
                   onClick={() => handleSendMessage("졸업요건에 대해 알려줘")}
@@ -163,6 +171,8 @@ const MainPage = () => {
                   졸업요건에 대해 알려줘
                 </Button>
                 <Button
+                  fontSize={"2xl"}
+                  fontWeight={"medium"}
                   backgroundColor="#EAE6DA"
                   _hover={{ backgroundColor: "#DDD8C6" }}
                   onClick={() => handleSendMessage("수강신청 언제야")}
@@ -296,7 +306,7 @@ const MessageInputWrapper = styled.div`
 `;
 
 const LoadingText = styled(Text)`
-  font-size: 16px;
+  font-size: 20px;
   color: #555;
   margin-left: 12px;
 `;

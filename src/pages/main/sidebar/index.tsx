@@ -74,11 +74,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             mt={8}
             width="100%"
           >
-            <Box textAlign="center" mb={4}>
-              <p style={{ fontSize: "24px", fontWeight: "bold" }}>
-                경북대 컴퓨터학부
-              </p>
-              <p style={{ fontSize: "24px", fontWeight: "bold" }}>
+            <Box textAlign="center" mb={4} color="#C73732">
+              <p style={{ fontSize: "45px" }}>경북대 컴퓨터학부</p>
+              <p
+                style={{
+                  fontSize: "45px",
+                  marginTop: "-10px",
+                }}
+              >
                 학사 정보 챗봇
               </p>
             </Box>
@@ -99,20 +102,16 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         {isOpen && (
           <Footer>
             <p>경북대학교 IT대학 컴퓨터학부</p>
-            <p>
-              우)41566 대구광역시 북구 대학로 80 / IT대학 융복합관
-              317호(건물번호 : 415)
-            </p>
+            <p>우)41566 대구광역시 북구 대학로 80</p>
+            <p>IT대학 융복합관 317호(건물번호 : 415)</p>
             <p>TEL. 학부 : 950-5550 , 대학원 : 950-6420 </p>
             <p>FAX. 053-957-4846</p>
             <p>E-mail. scse@knu.ac.kr</p>
             <p>
-              담당자 현황:
+              담당자 현황:&nbsp;
               <Link
                 href="https://computer.knu.ac.kr/bbs/board.php?bo_table=sub2_5"
-                color="white"
-                fontWeight="bold"
-                textDecoration="Highlight"
+                textDecoration="underline"
               >
                 링크 연결
               </Link>
@@ -132,8 +131,23 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
               alignItems="center"
             >
               <Box>
-                <p>사이드바를 열어 로그인하거나</p>
-                <p>히스토리를 볼 수 있어요!</p>
+                <p
+                  style={{
+                    fontSize: "22px",
+                    fontWeight: "300",
+                  }}
+                >
+                  사이드바를 열어 로그인하거나
+                </p>
+                <p
+                  style={{
+                    fontSize: "22px",
+                    fontWeight: "300",
+                    marginTop: "-4px",
+                  }}
+                >
+                  히스토리를 볼 수 있어요!
+                </p>
               </Box>
               <CloseButton
                 aria-label="Close tooltip" // 필수 aria-label 추가
@@ -212,13 +226,14 @@ const Divider = styled.hr`
 `;
 
 const Footer = styled(Box)`
+  font-family: "Nanum Gothic", sans-serif;
+  font-size: 12px;
   position: absolute;
   bottom: 60px;
   padding: 20px;
-  font-size: 12px;
   line-height: 1.5;
   text-align: left;
-  color: white;
+  color: black;
   width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -271,7 +286,6 @@ const TooltipBox = styled(Box)`
   left: 100%;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 14px;
   width: 250px;
   margin-left: -150px; // 아이콘과 말풍선 간격
   margin-top: -50px; // 아이콘과 말풍선 중앙 정렬

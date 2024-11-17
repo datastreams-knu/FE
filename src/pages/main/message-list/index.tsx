@@ -24,7 +24,7 @@ export const MessageList: React.FC<MessageListProps> = ({ messages }) => {
         const isEven = reversedIndex % 2 === 0;
 
         return (
-          <MessageBox key={index} isEven={isEven}>
+          <MessageBox key={index} isEven={isEven} fontSize={"xl"}>
             <Text>{message}</Text>
           </MessageBox>
         );
