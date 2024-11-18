@@ -1,7 +1,6 @@
-import { Box, Textarea, IconButton } from "@chakra-ui/react";
+import { Box, Textarea, IconButton, Flex } from "@chakra-ui/react";
 import { ArrowUpIcon } from "@chakra-ui/icons";
-import styled from "@emotion/styled";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useCallback } from "react";
 
 interface MessageInputProps {
   inputMessage: string;
@@ -32,97 +31,78 @@ export const MessageInput: React.FC<MessageInputProps> = ({
     }
   };
 
-  const autoResize = () => {
+  const autoResize = useCallback(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
       setInputHeight(textareaRef.current.scrollHeight);
     }
-  };
+  }, [setInputHeight]);
 
   useEffect(() => {
     autoResize();
-  }, [inputMessage]);
+  }, [inputMessage, autoResize]);
 
   return (
-    <MessageInputContainer>
-      <TextareaWrapper>
-        <StyledTextarea
+    <Box
+      position="fixed"
+      bottom="20px"
+      left="50%"
+      transform="translateX(-50%)"
+      width="90%"
+      maxW="800px"
+      bg="#f6f6f6"
+      borderRadius="20px"
+      p="10px 20px"
+      boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
+      zIndex="100"
+    >
+      <Flex position="relative" align="flex-end">
+        <Textarea
           ref={textareaRef}
           value={inputMessage}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           placeholder="Type a question..."
           rows={1}
+          bg="transparent"
+          border="none"
+          outline="none"
+          width="100%"
+          fontSize="22px"
+          pr="45px"
+          resize="none"
+          overflowY="auto"
+          maxH="180px"
+          minH="36px"
+          lineHeight="1.5"
+          _placeholder={{ color: "#ccc" }}
+          _focus={{ boxShadow: "none", outline: "none" }}
+          sx={{
+            "&::-webkit-scrollbar": {
+              width: "6px",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "#ccc",
+              borderRadius: "10px",
+            },
+          }}
         />
-        <FixedIconButton
+        <IconButton
           aria-label="Send message"
           icon={<ArrowUpIcon />}
           colorScheme="gray"
           variant="ghost"
           size="md"
           isRound
+          position="absolute"
+          right="15px"
+          bg="#d7d7d7"
+          zIndex="10"
           onClick={onSendMessage}
-          isDisabled={isLoading} // 로딩 중일 때 버튼 비활성화
+          isDisabled={isLoading}
         />
-      </TextareaWrapper>
-    </MessageInputContainer>
+      </Flex>
+    </Box>
   );
 };
-
-// 스타일 코드 그대로 유지
-const MessageInputContainer = styled(Box)`
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 90%;
-  max-width: 800px;
-  background-color: #f6f6f6;
-  border-radius: 20px;
-  padding: 10px 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 100;
-`;
-
-const TextareaWrapper = styled.div`
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-`;
-
-const StyledTextarea = styled(Textarea)`
-  background: transparent;
-  border: none;
-  outline: none;
-  width: 100%;
-  font-size: 22px;
-  padding-right: 45px;
-  resize: none;
-  overflow-y: auto;
-  max-height: 180px;
-  min-height: 36px;
-  line-height: 1.5;
-  scrollbar-width: thin;
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: #ccc;
-    border-radius: 10px;
-  }
-  ::placeholder {
-    color: #ccc;
-  }
-  &:focus {
-    outline: none;
-    box-shadow: none;
-  }
-`;
-
-const FixedIconButton = styled(IconButton)`
-  position: absolute;
-  right: 15px;
-  background-color: #d7d7d7;
-  z-index: 10;
-`;

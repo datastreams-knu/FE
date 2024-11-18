@@ -1,12 +1,12 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import MainPage from '@/pages/main';  // 메인 페이지
-import { RouterPath } from './path';  // 경로 상수 가져오기
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import MainPage from "@/pages/MainPage/MainPage";
+import { RouterPath } from "./path"; // 경로 상수 가져오기
 
 // 라우터 정의
 const router = createBrowserRouter([
   {
     path: RouterPath.root,
-    element: <MainPage />,  // 메인 페이지를 직접 렌더링
+    element: <MainPage />, // 메인 페이지를 직접 렌더링
   },
 ]);
 

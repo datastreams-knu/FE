@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import { MessageInput } from "./message-input";
-import { MessageList } from "./message-list";
-import { Sidebar } from "./sidebar";
-import styled from "@emotion/styled";
-import { Spinner, Box, Flex, Text, Button } from "@chakra-ui/react";
+import { MessageInput } from "./MessageInput/MessageInput";
+import { MessageList } from "./messageList/MessageList";
+import { Sidebar } from "./Sidebar/Sidebar";
+import { Box, Flex, Spinner, Text, Button, Image } from "@chakra-ui/react";
 import tutorial1 from "@/assets/tutorial1.svg";
 import tutorial2 from "@/assets/tutorial2.svg";
 import tutorial3 from "@/assets/tutorial3.svg";
@@ -19,6 +18,7 @@ const MainPage = () => {
   const [tutorialImage, setTutorialImage] = useState<string>(""); // 랜덤 이미지 상태 추가
   const pageRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const prevHeightRef = useRef<number>(0); // 이전 높이를 저장할 ref
   const baseURL = import.meta.env.VITE_BASE_URL;
 
   interface ResponseData {
@@ -86,64 +86,105 @@ const MainPage = () => {
     setTutorialImage(randomImage);
   }, []);
 
-  // 로딩 중일 때만 0.5초 후 스크롤을 가장 아래로 이동
+  // 화면 높이가 길어질 때만 스크롤을 가장 아래로 이동
   useEffect(() => {
     let timeoutId: number;
 
-    if (loading && bottomRef.current) {
-      timeoutId = window.setTimeout(() => {
-        if (bottomRef.current) {
-          bottomRef.current.scrollIntoView({ behavior: "smooth" });
-        }
-      }, 500); // 0.5초 후에 스크롤 이동
+    if (bottomRef.current) {
+      const currentHeight = bottomRef.current.getBoundingClientRect().top;
+
+      // 현재 높이가 이전 높이보다 길어졌을 경우에만 스크롤 이동
+      if (currentHeight > prevHeightRef.current) {
+        timeoutId = window.setTimeout(() => {
+          if (bottomRef.current) {
+            bottomRef.current.scrollIntoView({ behavior: "smooth" });
+          }
+        }, 500); // 0.5초 후에 스크롤 이동
+      }
+
+      // 현재 높이를 저장
+      prevHeightRef.current = currentHeight;
     }
 
-    return () => clearTimeout(timeoutId); // 로딩이 끝나거나 컴포넌트가 언마운트되면 타이머를 정리
-  }, [loading]);
+    return () => clearTimeout(timeoutId); // 타이머 정리
+  }, [messages]);
 
   const toggleSidebar = () => {
     setSidebarOpen((prev) => !prev);
   };
 
   return (
-    <PageWrapper ref={pageRef}>
-      <SidebarWrapper isOpen={isSidebarOpen}>
+    <Box
+      ref={pageRef}
+      bg="#f3f2ec"
+      position="relative"
+      h="100vh"
+      overflowY="auto"
+      display="flex"
+      flexDirection="column"
+    >
+      <Box
+        position="fixed"
+        left="0"
+        top="0"
+        bottom="0"
+        w={isSidebarOpen ? "250px" : "0"}
+        overflow="hidden"
+        transition="width 0.3s ease-in-out"
+        bg="#f0f0f0"
+        zIndex="1000"
+      >
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      </SidebarWrapper>
+      </Box>
 
-      <ContentWrapper inputHeight={inputHeight}>
+      <Flex
+        flex="1"
+        direction="column"
+        align="center"
+        justify="flex-end"
+        mb={`${Math.min(inputHeight - 40, 120)}px`}
+        transition="margin-left 0.3s ease-in-out"
+      >
         {messages.length === 0 ? (
-          <TutorialImageWrapper>
-            <Box
-              textAlign="center"
-              display="flex"
-              flexDirection="column"
-              alignItems="center"
-            >
-              <img src={tutorialImage} alt="Tutorial" />
-              <Box
-                display="flex"
-                flexWrap="wrap"
+          <Flex
+            position="absolute"
+            top="40%"
+            left="50%"
+            transform="translate(-50%, -50%)"
+            justify="center"
+            align="center"
+            w="100%"
+          >
+            <Flex direction="column" align="center">
+              <Image
+                src={tutorialImage}
+                alt="Tutorial"
+                maxW="100%"
+                maxH="400px"
+                objectFit="contain"
+              />
+              <Flex
+                wrap="wrap"
                 gap={4}
-                justifyContent="center"
+                justify="center"
                 mt="6"
                 px={4}
                 maxW="800px"
               >
                 <Button
-                  fontSize={"2xl"}
-                  fontWeight={"medium"}
-                  backgroundColor="#EAE6DA"
-                  _hover={{ backgroundColor: "#DDD8C6" }}
+                  fontSize="2xl"
+                  fontWeight="medium"
+                  bg="#EAE6DA"
+                  _hover={{ bg: "#DDD8C6" }}
                   onClick={() => handleSendMessage("최근 공지사항 알려줘")}
                 >
                   최근 공지사항 알려줘
                 </Button>
                 <Button
-                  fontSize={"2xl"}
-                  fontWeight={"medium"}
-                  backgroundColor="#EAE6DA"
-                  _hover={{ backgroundColor: "#DDD8C6" }}
+                  fontSize="2xl"
+                  fontWeight="medium"
+                  bg="#EAE6DA"
+                  _hover={{ bg: "#DDD8C6" }}
                   onClick={() =>
                     handleSendMessage("점심 제공하는 세미나 알려줘")
                   }
@@ -151,45 +192,53 @@ const MainPage = () => {
                   점심 제공하는 세미나 알려줘
                 </Button>
                 <Button
-                  fontSize={"2xl"}
-                  fontWeight={"medium"}
-                  backgroundColor="#EAE6DA"
-                  _hover={{ backgroundColor: "#DDD8C6" }}
+                  fontSize="2xl"
+                  fontWeight="medium"
+                  bg="#EAE6DA"
+                  _hover={{ bg: "#DDD8C6" }}
                   onClick={() =>
                     handleSendMessage("컴퓨터학부 대회 정보 알려줘")
                   }
                 >
-                  컴퓨터학부 대회 정보 알려줘
+                  참여가능한 대회 알려줘
                 </Button>
                 <Button
-                  fontSize={"2xl"}
-                  fontWeight={"medium"}
-                  backgroundColor="#EAE6DA"
-                  _hover={{ backgroundColor: "#DDD8C6" }}
+                  fontSize="2xl"
+                  fontWeight="medium"
+                  bg="#EAE6DA"
+                  _hover={{ bg: "#DDD8C6" }}
                   onClick={() => handleSendMessage("졸업요건에 대해 알려줘")}
                 >
                   졸업요건에 대해 알려줘
                 </Button>
                 <Button
-                  fontSize={"2xl"}
-                  fontWeight={"medium"}
-                  backgroundColor="#EAE6DA"
-                  _hover={{ backgroundColor: "#DDD8C6" }}
+                  fontSize="2xl"
+                  fontWeight="medium"
+                  bg="#EAE6DA"
+                  _hover={{ bg: "#DDD8C6" }}
                   onClick={() => handleSendMessage("수강신청 언제야")}
                 >
                   수강신청 언제야
                 </Button>
-              </Box>
-            </Box>
-          </TutorialImageWrapper>
+              </Flex>
+            </Flex>
+          </Flex>
         ) : (
-          <MessageListWrapper>
+          <Box w="100%" flex="1" overflowY="auto" mb="20px" position="relative">
             <MessageList messages={messages} />
-            <div ref={bottomRef} /> {/* 스크롤이 이동할 위치를 표시 */}
-          </MessageListWrapper>
+            <div ref={bottomRef} />
+          </Box>
         )}
 
-        <LoadingContainer loading={loading}>
+        <Box
+          w="100%"
+          h={loading ? "60px" : "0"}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          pb={loading ? "110px" : "0"}
+          transition="height 0.3s ease-in-out, padding-bottom 0.3s ease-in-out"
+        >
           {loading && (
             <Flex align="center" justify="center">
               <Spinner
@@ -199,12 +248,14 @@ const MainPage = () => {
                 color="#fcb9aa"
                 size="lg"
               />
-              <LoadingText>응답을 기다리는 중...</LoadingText>
+              <Text fontSize="20px" color="#555" ml="12px">
+                응답을 기다리는 중...
+              </Text>
             </Flex>
           )}
-        </LoadingContainer>
+        </Box>
 
-        <MessageInputWrapper>
+        <Box w="90%" maxW="800px" mt="20px" position="relative" mb="20px">
           <MessageInput
             inputMessage={inputMessage}
             setInputMessage={setInputMessage}
@@ -212,101 +263,10 @@ const MainPage = () => {
             setInputHeight={setInputHeight}
             isLoading={loading}
           />
-        </MessageInputWrapper>
-      </ContentWrapper>
-    </PageWrapper>
+        </Box>
+      </Flex>
+    </Box>
   );
 };
 
 export default MainPage;
-
-// 스타일 코드
-const PageWrapper = styled.div`
-  background-color: #f3f2ec;
-  position: relative;
-  height: 100vh;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-`;
-
-const SidebarWrapper = styled.div<{ isOpen: boolean }>`
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: ${({ isOpen }) => (isOpen ? "250px" : "0")};
-  overflow: hidden;
-  transition: width 0.3s ease-in-out;
-  background-color: #f0f0f0;
-  z-index: 1000;
-`;
-
-const ContentWrapper = styled.div<{ inputHeight: number }>`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  margin-bottom: ${({ inputHeight }) => Math.min(inputHeight - 40, 120)}px;
-  transition: margin-left 0.3s ease-in-out;
-`;
-
-const MessageListWrapper = styled.div`
-  width: 100%;
-  flex-grow: 1;
-  overflow-y: auto;
-  margin-bottom: 20px;
-  position: relative;
-`;
-
-const TutorialImageWrapper = styled.div`
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-
-  img {
-    max-width: 100%;
-    max-height: 400px;
-    object-fit: contain;
-
-    @media (max-width: 768px) {
-      max-width: 90vw;
-      object-fit: contain;
-    }
-
-    @media (max-width: 480px) {
-      max-width: 80vw;
-      object-fit: contain;
-    }
-  }
-`;
-
-const LoadingContainer = styled(Box)<{ loading: boolean }>`
-  width: 100%;
-  height: ${({ loading }) => (loading ? "60px" : "0")};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: ${({ loading }) => (loading ? "110px" : "0")};
-  transition: height 0.3s ease-in-out, padding-bottom 0.3s ease-in-out;
-`;
-
-const MessageInputWrapper = styled.div`
-  width: 90%;
-  max-width: 800px;
-  margin-top: 20px;
-  position: relative;
-  margin-bottom: 20px;
-`;
-
-const LoadingText = styled(Text)`
-  font-size: 20px;
-  color: #555;
-  margin-left: 12px;
-`;
