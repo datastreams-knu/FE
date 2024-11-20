@@ -21,33 +21,33 @@ export const MessageList: React.FC<MessageListProps> = ({ messages }) => {
       w="90%"
       maxW="800px"
       display="flex"
-      flexDirection="column-reverse"
+      flexDirection="column"
       minH="60vh"
-      overflow="visible"
+      overflow="auto"
       p="10px"
       m="0 auto 60px"
     >
-      {messages.map((message, index) => {
-        // 뒤에서부터 번호를 매긴 index 계산
-        const reversedIndex = messages.length - index;
-        const isEven = reversedIndex % 2 === 0;
+      {messages
+        .slice() // 원본 배열을 복사하여 수정
+        .map((message, index) => {
+          const isEven = index % 2 === 1;
 
-        return (
-          <Box
-            key={index}
-            m="5px 0"
-            p="10px"
-            bg={isEven ? "#FFDFB8" : "#DDD8C6"}
-            borderRadius="8px"
-            maxW="80%"
-            alignSelf={isEven ? "flex-start" : "flex-end"}
-            wordBreak="break-word"
-            fontSize={{ base: "xl", md: "2xl" }} // 모바일 환경에서는 폰트가 작아지게 설정
-          >
-            <Text>{message}</Text>
-          </Box>
-        );
-      })}
+          return (
+            <Box
+              key={index}
+              m="5px 0"
+              p="10px"
+              bg={isEven ? "#DDD8C6" : "#FFDFB8"}
+              borderRadius="8px"
+              maxW="80%"
+              alignSelf={isEven ? "flex-start" : "flex-end"}
+              wordBreak="break-word"
+              fontSize={{ base: "xl", md: "2xl" }}
+            >
+              <Text>{message}</Text>
+            </Box>
+          );
+        })}
     </Box>
   );
 };

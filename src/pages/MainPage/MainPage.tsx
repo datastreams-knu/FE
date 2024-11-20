@@ -32,7 +32,12 @@ const MainPage = () => {
 
   const handleSendMessage = async (message: string) => {
     if (message.trim() && !loading) {
-      setMessages((prev) => [message, ...prev]); // 메시지를 바로 추가
+      setMessages((prev) => {
+        const updatedMessages = [...prev, message]; // 메시지를 뒤에 추가
+        console.log("현재 메시지 목록:", updatedMessages);
+        return updatedMessages;
+      });
+
       setInputMessage("");
       setLoading(true);
 
@@ -59,13 +64,21 @@ const MainPage = () => {
 
         const formattedResponse = `${data.response.answer}\n\n${data.response.references}\n\n${data.response.disclaimer}${images}`;
 
-        setMessages((prev) => [formattedResponse, ...prev]);
+        setMessages((prev) => {
+          const updatedMessages = [...prev, formattedResponse]; // 응답 메시지도 뒤에 추가
+          console.log("현재 메시지 목록:", updatedMessages);
+          return updatedMessages;
+        });
       } catch (error) {
         console.error("Error while sending message:", error);
-        setMessages((prev) => [
-          "서버에 문제가 있습니다. 잠시 후 다시 시도해주세요!",
-          ...prev,
-        ]);
+        setMessages((prev) => {
+          const updatedMessages = [
+            ...prev,
+            "서버에 문제가 있습니다. 잠시 후 다시 시도해주세요!",
+          ];
+          console.log("현재 메시지 목록:", updatedMessages);
+          return updatedMessages;
+        });
       } finally {
         setLoading(false);
       }
