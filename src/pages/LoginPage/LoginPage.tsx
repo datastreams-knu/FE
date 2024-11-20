@@ -8,14 +8,36 @@ import {
   Image,
   Link,
   Box,
+  IconButton,
 } from "@chakra-ui/react";
+import { ArrowBackIcon } from "@chakra-ui/icons";
+import { useNavigate } from "react-router-dom"; // React Router 사용
+
 import loginHobanu from "./assets/loginHobanu.svg"; // 이미지 경로를 맞게 설정하세요
 
 const LoginPage: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleBack = () => {
+    navigate(-1); // 이전 페이지로 이동
+  };
+
   return (
     <Box alignContent={"center"} bg="#f3f2ec" height={"100vh"}>
-      <Center p={8} pb={100} maxW="400px" mx="auto">
-        <Stack spacing={4} align="center" w="full">
+      {/* 상단 왼쪽에 이전 페이지 버튼 */}
+      <Box position="absolute" top="20px" left="20px">
+        <IconButton
+          aria-label="Go Back"
+          icon={<ArrowBackIcon />}
+          onClick={handleBack}
+          bg="#DCD8C8"
+          color="black"
+          _hover={{ bg: "#AAA282" }}
+        />
+      </Box>
+
+      <Center p={8} pb={120} maxW="500px" mx="auto">
+        <Stack spacing={7} align="center" w="full">
           {/* 상단 캐릭터 이미지 */}
           <Image
             src={loginHobanu} // 로컬 이미지 사용
