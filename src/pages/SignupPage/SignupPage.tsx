@@ -49,14 +49,14 @@ const SignupPage: React.FC = () => {
       <Center p={8} pb={120} maxW="500px" mx={"auto"}>
         <Stack spacing={7} align="center" w="full">
           {/* 상단 캐릭터 이미지 */}
-          <Image src={welcomeHobanu} alt="Character" boxSize="180px" mb={3} />
+          <Image src={welcomeHobanu} alt="Character" boxSize="220px" mb={3} />
           {/* 이메일 입력 및 중복 확인 */}
           <Box w="full">
             <Stack direction="row" spacing={2}>
               <Input
                 placeholder="이메일"
                 bg="white"
-                variant="filled"
+                fontSize={"xl"}
                 focusBorderColor="#DCD8C8"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -64,6 +64,8 @@ const SignupPage: React.FC = () => {
               <Button
                 bg="#AAA282"
                 color="white"
+                fontSize={"xl"}
+                fontWeight={"light"}
                 _hover={{ bg: "#8B8469" }}
                 onClick={handleEmailCheck}
               >
@@ -72,7 +74,7 @@ const SignupPage: React.FC = () => {
             </Stack>
             {/* 이메일 중복 확인 메시지 */}
             {emailCheckMessage && (
-              <Text fontSize="sm" color="#8B8469" mt={2} textAlign={"center"}>
+              <Text fontSize={"xl"} color="#8B8469" mt={2} textAlign={"center"}>
                 {emailCheckMessage}
               </Text>
             )}
@@ -82,14 +84,14 @@ const SignupPage: React.FC = () => {
             placeholder="비밀번호"
             type="password"
             bg="white"
-            variant="filled"
+            fontSize={"xl"}
             focusBorderColor="#DCD8C8"
           />
           {/* 닉네임 입력 */}
           <Input
             placeholder="닉네임"
             bg="white"
-            variant="filled"
+            fontSize={"xl"}
             focusBorderColor="#DCD8C8"
           />
           {/* 회원가입 버튼 */}
@@ -97,7 +99,8 @@ const SignupPage: React.FC = () => {
             w="full"
             bg="#DCD8C8"
             color="black"
-            fontSize="lg"
+            fontSize="2xl"
+            fontWeight={"light"}
             _hover={{ bg: "#AAA282" }}
           >
             가입하기

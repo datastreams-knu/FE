@@ -159,7 +159,7 @@ const MainPage = () => {
               <Image
                 src={tutorialImage}
                 alt="Tutorial"
-                maxW="100%"
+                maxW="90%"
                 maxH="400px"
                 objectFit="contain"
               />
@@ -175,7 +175,7 @@ const MainPage = () => {
                   fontSize="2xl"
                   fontWeight="medium"
                   bg="#EAE6DA"
-                  _hover={{ bg: "#DDD8C6" }}
+                  _hover={{ bg: "#DDD8C6", transform: "scale(1.05)" }}
                   onClick={() => handleSendMessage("최근 공지사항 알려줘")}
                 >
                   최근 공지사항 알려줘
@@ -184,7 +184,7 @@ const MainPage = () => {
                   fontSize="2xl"
                   fontWeight="medium"
                   bg="#EAE6DA"
-                  _hover={{ bg: "#DDD8C6" }}
+                  _hover={{ bg: "#DDD8C6", transform: "scale(1.05)" }}
                   onClick={() =>
                     handleSendMessage("점심 제공하는 세미나 알려줘")
                   }
@@ -195,7 +195,7 @@ const MainPage = () => {
                   fontSize="2xl"
                   fontWeight="medium"
                   bg="#EAE6DA"
-                  _hover={{ bg: "#DDD8C6" }}
+                  _hover={{ bg: "#DDD8C6", transform: "scale(1.05)" }}
                   onClick={() =>
                     handleSendMessage("컴퓨터학부 대회 정보 알려줘")
                   }
@@ -206,7 +206,7 @@ const MainPage = () => {
                   fontSize="2xl"
                   fontWeight="medium"
                   bg="#EAE6DA"
-                  _hover={{ bg: "#DDD8C6" }}
+                  _hover={{ bg: "#DDD8C6", transform: "scale(1.05)" }}
                   onClick={() => handleSendMessage("졸업요건에 대해 알려줘")}
                 >
                   졸업요건에 대해 알려줘
@@ -215,7 +215,7 @@ const MainPage = () => {
                   fontSize="2xl"
                   fontWeight="medium"
                   bg="#EAE6DA"
-                  _hover={{ bg: "#DDD8C6" }}
+                  _hover={{ bg: "#DDD8C6", transform: "scale(1.05)" }}
                   onClick={() => handleSendMessage("수강신청 언제야")}
                 >
                   수강신청 언제야

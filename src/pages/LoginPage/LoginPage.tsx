@@ -53,7 +53,7 @@ const LoginPage: React.FC = () => {
           <Input
             placeholder="이메일"
             bg="white"
-            variant="filled"
+            fontSize={"xl"}
             focusBorderColor="#DCD8C8"
           />
           {/* 비밀번호 입력 */}
@@ -61,7 +61,7 @@ const LoginPage: React.FC = () => {
             placeholder="비밀번호"
             type="password"
             bg="white"
-            variant="filled"
+            fontSize={"xl"}
             focusBorderColor="#DCD8C8"
           />
           {/* 로그인 버튼 */}
@@ -69,13 +69,14 @@ const LoginPage: React.FC = () => {
             w="full"
             bg="#DCD8C8"
             color="black"
-            fontSize={"lg"}
+            fontSize={"2xl"}
+            fontWeight={"light"}
             _hover={{ bg: "#AAA282" }}
           >
             로그인하기
           </Button>
           {/* 회원가입 링크 */}
-          <Text fontSize="lg" color="gray.600">
+          <Text fontSize="2xl" color="gray.600">
             아직 회원이 아니신가요?{" "}
             <Link color="#8B8469" onClick={handleSignup}>
               회원가입

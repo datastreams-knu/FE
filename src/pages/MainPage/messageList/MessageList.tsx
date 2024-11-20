@@ -42,7 +42,7 @@ export const MessageList: React.FC<MessageListProps> = ({ messages }) => {
             maxW="80%"
             alignSelf={isEven ? "flex-start" : "flex-end"}
             wordBreak="break-word"
-            fontSize="xl"
+            fontSize={{ base: "xl", md: "2xl" }} // 모바일 환경에서는 폰트가 작아지게 설정
           >
             <Text>{message}</Text>
           </Box>

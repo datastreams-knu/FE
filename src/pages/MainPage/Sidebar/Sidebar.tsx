@@ -125,10 +125,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             <Button
               variant="unstyled"
               background={"#B8433A"}
-              width="300px"
+              width="250px"
               height="45px"
               fontSize={30}
-              fontWeight={300}
+              fontWeight={"light"}
               onClick={handleLogin}
               _hover={{ bg: "#7E2B24" }}
             >
@@ -213,10 +213,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           >
             <Flex justifyContent="space-between" alignItems="center">
               <Box>
-                <Box fontSize="22px" fontWeight="300">
+                <Box fontSize="22px" fontWeight="100">
                   사이드바를 열어 로그인하거나
                 </Box>
-                <Box fontSize="22px" fontWeight="300" mt="-4px">
+                <Box fontSize="22px" fontWeight="100" mt="-4px">
                   히스토리를 볼 수 있어요!
                 </Box>
               </Box>
