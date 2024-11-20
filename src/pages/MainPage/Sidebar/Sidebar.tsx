@@ -35,8 +35,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
     };
   }, [isOpen]);
 
-  const handleKakaoLogin = () => {
-    window.location.href = "http://127.0.0.1:8080";
+  const handleLogin = () => {
+    window.location.href = "/login";
   };
 
   const handleTooltipClose = () => {
@@ -122,17 +122,15 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             <Box as="hr" width="90%" borderTop="1px solid white" my={5} />
             <Button
               variant="unstyled"
-              mt={5}
-              onClick={handleKakaoLogin}
-              _hover={{ bg: "transparent" }}
+              background={"#B8433A"}
+              width="300px"
+              height="50px"
+              fontSize={30}
+              fontWeight={300}
+              onClick={handleLogin}
+              _hover={{ bg: "#7E2B24" }}
             >
-              <Image
-                src="https://developers.kakao.com/tool/resource/static/img/button/login/full/ko/kakao_login_large_wide.png"
-                alt="카카오 로그인"
-                w="300px"
-                h="45px"
-                filter="brightness(1.2)"
-              />
+              로그인
             </Button>
           </Flex>
         )}
