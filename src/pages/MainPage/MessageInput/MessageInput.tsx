@@ -53,7 +53,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
       maxW="800px"
       bg="#f6f6f6"
       borderRadius="20px"
-      p="10px 20px"
+      p="10px 10px"
       boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
       zIndex="100"
     >
@@ -97,7 +97,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
           size="md"
           isRound
           position="absolute"
-          right="15px"
+          right="7px"
           bg="#d7d7d7"
           zIndex="10"
           onClick={onSendMessage}
