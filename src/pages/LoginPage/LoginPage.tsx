@@ -22,6 +22,10 @@ const LoginPage: React.FC = () => {
     navigate(-1); // 이전 페이지로 이동
   };
 
+  const handleSignup = () => {
+    navigate("/signup"); // 페이지를 이동
+  };
+
   return (
     <Box alignContent={"center"} bg="#f3f2ec" height={"100vh"}>
       {/* 상단 왼쪽에 이전 페이지 버튼 */}
@@ -73,7 +77,7 @@ const LoginPage: React.FC = () => {
           {/* 회원가입 링크 */}
           <Text fontSize="lg" color="gray.600">
             아직 회원이 아니신가요?{" "}
-            <Link color="#8B8469" href="/signup">
+            <Link color="#8B8469" onClick={handleSignup}>
               회원가입
             </Link>
           </Text>

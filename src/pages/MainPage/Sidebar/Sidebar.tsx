@@ -6,6 +6,7 @@ import {
   CloseIcon,
 } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import knuLogo from "@/assets/knuLogo.svg";
 
 interface SidebarProps {
@@ -15,6 +16,7 @@ interface SidebarProps {
 
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   const [showTooltip, setShowTooltip] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const tooltipDismissed = localStorage.getItem("tooltipDismissed");
@@ -36,7 +38,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   }, [isOpen]);
 
   const handleLogin = () => {
-    window.location.href = "/login";
+    navigate("/login"); // 페이지를 이동
   };
 
   const handleTooltipClose = () => {
@@ -124,7 +126,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
               variant="unstyled"
               background={"#B8433A"}
               width="300px"
-              height="50px"
+              height="45px"
               fontSize={30}
               fontWeight={300}
               onClick={handleLogin}
