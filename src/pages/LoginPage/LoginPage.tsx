@@ -71,6 +71,7 @@ const LoginPage: React.FC = () => {
             color="black"
             fontSize={"2xl"}
             fontWeight={"light"}
+            letterSpacing={"0.1em"}
             _hover={{ bg: "#AAA282" }}
           >
             로그인하기

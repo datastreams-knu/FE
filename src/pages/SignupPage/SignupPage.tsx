@@ -101,6 +101,7 @@ const SignupPage: React.FC = () => {
             color="black"
             fontSize="2xl"
             fontWeight={"light"}
+            letterSpacing={"0.1em"}
             _hover={{ bg: "#AAA282" }}
           >
             가입하기

@@ -129,6 +129,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
               height="45px"
               fontSize={30}
               fontWeight={"light"}
+              letterSpacing={"0.1em"}
               onClick={handleLogin}
               _hover={{ bg: "#7E2B24" }}
             >
@@ -193,11 +194,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           <InfoOutlineIcon boxSize={5} color="transparent" />
           <Box
             position="relative"
-            width="220px"
+            width="240px"
             mt={-110}
             p={4}
             bg="#fcb9aa"
             color="white"
+            fontFamily={"'Nanum Gothic', sans-serif"}
+            fontSize={14}
             borderRadius="8px"
             boxShadow="0 0 8px rgba(0, 0, 0, 0.2)"
             _after={{
@@ -213,12 +216,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           >
             <Flex justifyContent="space-between" alignItems="center">
               <Box>
-                <Box fontSize="22px" fontWeight="100">
-                  사이드바를 열어 로그인하거나
-                </Box>
-                <Box fontSize="22px" fontWeight="100" mt="-4px">
-                  히스토리를 볼 수 있어요!
-                </Box>
+                <Box>사이드바를 열어 로그인하거나</Box>
+                <Box>히스토리를 볼 수 있어요!</Box>
               </Box>
               <IconButton
                 aria-label="Close tooltip"
@@ -229,7 +228,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                 color="white"
                 _hover={{ bg: "none" }}
                 position="absolute"
-                top="5px"
+                top="0px"
                 right="0px"
               />
             </Flex>
