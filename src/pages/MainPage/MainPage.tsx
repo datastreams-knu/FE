@@ -22,26 +22,20 @@ const MainPage = () => {
   const baseURL = import.meta.env.VITE_BASE_URL;
 
   interface ResponseData {
-    response: {
-      answer: string;
-      references: string;
-      disclaimer: string;
-      images?: string[]; // optional field
-    };
+    answer: string;
+    references: string;
+    disclaimer: string;
+    images: string[];
   }
 
   const handleSendMessage = async (message: string) => {
     if (message.trim() && !loading) {
-      setMessages((prev) => {
-        const updatedMessages = [...prev, message]; // 메시지를 뒤에 추가
-        console.log("현재 메시지 목록:", updatedMessages);
-        return updatedMessages;
-      });
-
+      setMessages((prev) => [...prev, message]);
       setInputMessage("");
       setLoading(true);
 
       try {
+        console.log("API 요청 시작");
         const response = await fetch(`${baseURL}/api/front-ai-response`, {
           method: "POST",
           headers: {
@@ -50,35 +44,39 @@ const MainPage = () => {
           body: JSON.stringify({ question: message }),
         });
 
+        console.log("응답 상태 코드:", response.status);
         if (!response.ok) {
-          throw new Error("Failed to fetch AI response");
+          throw new Error(`서버 오류: ${response.status}`);
         }
 
         const data: ResponseData = await response.json();
+        console.log("응답 데이터:", data);
 
-        const images = data.response.images?.length
-          ? `\n\n${data.response.images
-              .map((url: string) => `<img src="${url}" width="300" />`)
-              .join("\n")}`
-          : "";
+        // response와 필드 유효성 검사
+        if (!data) {
+          throw new Error("응답 데이터가 예상한 구조와 다릅니다.");
+        }
 
-        const formattedResponse = `${data.response.answer}\n\n${data.response.references}\n\n${data.response.disclaimer}${images}`;
+        // 이미지 처리
+        const images =
+          Array.isArray(data.images) &&
+          data.images.length > 0 &&
+          data.images[0] !== "No content"
+            ? `\n\n${data.images
+                .map((url: string) => `<img src="${url}" width="300" />`)
+                .join("\n")}`
+            : "";
 
-        setMessages((prev) => {
-          const updatedMessages = [...prev, formattedResponse]; // 응답 메시지도 뒤에 추가
-          console.log("현재 메시지 목록:", updatedMessages);
-          return updatedMessages;
-        });
+        console.log("이미지 처리 완료:", images);
+
+        const formattedResponse = `${data.answer}\n\n${data.references}\n\n${data.disclaimer}${images}`;
+        setMessages((prev) => [...prev, formattedResponse]);
       } catch (error) {
-        console.error("Error while sending message:", error);
-        setMessages((prev) => {
-          const updatedMessages = [
-            ...prev,
-            "서버에 문제가 있습니다. 잠시 후 다시 시도해주세요!",
-          ];
-          console.log("현재 메시지 목록:", updatedMessages);
-          return updatedMessages;
-        });
+        console.error("에러 발생:", error);
+        setMessages((prev) => [
+          ...prev,
+          "서버에 문제가 있습니다. 잠시 후 다시 시도해주세요!",
+        ]);
       } finally {
         setLoading(false);
       }
