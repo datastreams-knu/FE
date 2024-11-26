@@ -22,15 +22,21 @@ interface SidebarProps {
   toggleSidebar: () => void;
 }
 
+const ONE_DAY_MS = 24 * 60 * 60 * 1000; // 하루를 밀리초로 계산
+
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   const [showTooltip, setShowTooltip] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const tooltipDismissed = localStorage.getItem("tooltipDismissed");
-    let timer: NodeJS.Timeout;
+    const tooltipDismissedTime = localStorage.getItem("tooltipDismissedTime");
+    const now = Date.now();
+    let timer: ReturnType<typeof setTimeout>;
 
-    if (tooltipDismissed !== "true" && !isOpen) {
+    const isTooltipExpired =
+      !tooltipDismissedTime || now - Number(tooltipDismissedTime) > ONE_DAY_MS;
+
+    if (isTooltipExpired && !isOpen) {
       timer = setTimeout(() => {
         setShowTooltip(true);
       }, 500);
@@ -50,7 +56,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   };
 
   const handleTooltipClose = () => {
-    localStorage.setItem("tooltipDismissed", "true");
+    localStorage.setItem("tooltipDismissedTime", String(Date.now())); // 현재 시간 저장
     setShowTooltip(false);
   };
 
