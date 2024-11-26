@@ -1,12 +1,4 @@
-import {
-  Box,
-  Text,
-  IconButton,
-  Flex,
-  Link,
-  Button,
-  Image,
-} from "@chakra-ui/react";
+import { Box, Text, IconButton, Flex, Link, Button } from "@chakra-ui/react";
 import {
   ArrowForwardIcon,
   ArrowBackIcon,
@@ -15,7 +7,6 @@ import {
 } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import knuLogo from "@/assets/knuLogo.svg";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -96,7 +87,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           borderRadius="50%"
           w="100px"
           h="100px"
-          zIndex={-1}
+          zIndex={20000}
           opacity="0.6"
           _hover={{
             bg: "#fcb9aa",
@@ -127,6 +118,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             justifyContent="flex-start"
             mt={8}
             width="100%"
+            height="calc(100vh - 16px)" // 전체 높이 지정 (뷰포트 기준)
           >
             <Box
               textAlign="center"
@@ -139,122 +131,141 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                 학사 정보 챗봇
               </Box>
             </Box>
-            <Image src={knuLogo} alt="KNU Logo" w="120px" h="120px" mt={-3} />
-            <Box as="hr" width="90%" borderTop="1px solid white" my={5} />
-            <Button
-              variant="unstyled"
-              background={"#B8433A"}
-              width="250px"
-              height="45px"
-              display={"flex"}
-              fontSize={27}
-              fontWeight={100}
-              letterSpacing={"0.3em"}
-              onClick={handleLogin}
-              _hover={{ bg: "#7E2B24" }}
+            <Box
+              as="hr"
+              width="90%"
+              borderTop="3px solid #FFD0C6"
+              my={5}
+              borderRadius={"md"}
+            />
+            <Box
+              flex="1"
+              overflowY="auto" // 스크롤 가능
+              width="100%"
+              padding="10px"
+              css={{
+                "&::-webkit-scrollbar": {
+                  width: "8px",
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  background: "#FFD0C6",
+                  borderRadius: "4px",
+                },
+                "&::-webkit-scrollbar-track": {
+                  background: "#fcb9aa",
+                },
+              }}
             >
-              <Text mr={-2}>로그인</Text>
-            </Button>
+              <Button
+                variant="unstyled"
+                background={"#B8433A"}
+                width="250px"
+                height="45px"
+                fontSize={27}
+                fontWeight={100}
+                letterSpacing={"0.2em"}
+                onClick={handleLogin}
+                zIndex={30000}
+                _hover={{ bg: "#7E2B24" }}
+              >
+                <Text mr={-2}>로그인</Text>
+              </Button>
+              <Box
+                fontFamily="'Nanum Gothic', sans-serif"
+                fontSize="12px"
+                mt={5}
+                padding="20px"
+                lineHeight={1.5}
+                textAlign="left"
+                color="black"
+                width="100%"
+              >
+                <Box>경북대학교 IT대학 컴퓨터학부</Box>
+                <Box>우)41566 대구광역시 북구 대학로 80</Box>
+                <Box>IT대학 융복합관 317호(건물번호 : 415)</Box>
+                <Box>TEL. 학부 : 950-5550 , 대학원 : 950-6420 </Box>
+                <Box>FAX. 053-957-4846</Box>
+                <Box>E-mail. scse@knu.ac.kr</Box>
+                <Box>
+                  담당자 현황:&nbsp;
+                  <Link
+                    href="https://computer.knu.ac.kr/bbs/board.php?bo_table=sub2_5"
+                    textDecoration="underline"
+                  >
+                    링크 연결
+                  </Link>
+                </Box>
+                <Box>Copyright(c) 2024, KNU CSE All rights reserved</Box>
+              </Box>
+            </Box>
           </Flex>
         )}
 
-        {isOpen && (
+        {!isOpen && showTooltip && (
           <Box
-            fontFamily="'Nanum Gothic', sans-serif"
-            fontSize="12px"
-            mt={10}
-            bottom="60px"
-            padding="20px"
-            lineHeight={1.5}
-            textAlign="left"
-            color="black"
-            width="100%"
-            mx="auto"
+            position="fixed"
+            top="45%"
+            transform="translateY(-50%)"
+            display="flex"
+            alignItems="center"
+            zIndex={9999}
+            animation="bounce 2s ease-in-out infinite"
+            sx={{
+              "@keyframes bounce": {
+                "0%, 100%": {
+                  transform: "translateY(-60%)",
+                },
+                "50%": {
+                  transform: "translateY(-80%)",
+                },
+              },
+            }}
           >
-            <Box>경북대학교 IT대학 컴퓨터학부</Box>
-            <Box>우)41566 대구광역시 북구 대학로 80</Box>
-            <Box>IT대학 융복합관 317호(건물번호 : 415)</Box>
-            <Box>TEL. 학부 : 950-5550 , 대학원 : 950-6420 </Box>
-            <Box>FAX. 053-957-4846</Box>
-            <Box>E-mail. scse@knu.ac.kr</Box>
-            <Box>
-              담당자 현황:&nbsp;
-              <Link
-                href="https://computer.knu.ac.kr/bbs/board.php?bo_table=sub2_5"
-                textDecoration="underline"
-              >
-                링크 연결
-              </Link>
+            <InfoOutlineIcon boxSize={5} color="transparent" />
+            <Box
+              position="relative"
+              width="240px"
+              mt={-110}
+              p={4}
+              bg="#fcb9aa"
+              color="white"
+              fontFamily={"'Nanum Gothic', sans-serif"}
+              fontSize={14}
+              borderRadius="8px"
+              boxShadow="0 0 8px rgba(0, 0, 0, 0.2)"
+              _after={{
+                content: '""',
+                position: "absolute",
+                bottom: "-7px",
+                left: "5px",
+                transform: "translateY(50%)",
+                borderWidth: "8px",
+                borderStyle: "solid",
+                borderColor: "#fcb9aa transparent transparent transparent",
+              }}
+            >
+              <Flex justifyContent="space-between" alignItems="center">
+                <Box>
+                  <Box>사이드바를 열어 로그인하거나</Box>
+                  <Box>히스토리를 볼 수 있어요!</Box>
+                </Box>
+                <IconButton
+                  aria-label="Close tooltip"
+                  icon={<CloseIcon />}
+                  onClick={handleTooltipClose}
+                  variant="ghost"
+                  size="xs"
+                  color="white"
+                  _hover={{ bg: "none" }}
+                  position="absolute"
+                  top="0px"
+                  right="0px"
+                />
+              </Flex>
             </Box>
-            <Box>Copyright(c) 2024, KNU CSE All rights reserved</Box>
           </Box>
         )}
       </Box>
-
-      {!isOpen && showTooltip && (
-        <Box
-          position="fixed"
-          top="45%"
-          transform="translateY(-50%)"
-          display="flex"
-          alignItems="center"
-          zIndex={9999}
-          animation="bounce 2s ease-in-out infinite"
-          sx={{
-            "@keyframes bounce": {
-              "0%, 100%": {
-                transform: "translateY(-60%)",
-              },
-              "50%": {
-                transform: "translateY(-80%)",
-              },
-            },
-          }}
-        >
-          <InfoOutlineIcon boxSize={5} color="transparent" />
-          <Box
-            position="relative"
-            width="240px"
-            mt={-110}
-            p={4}
-            bg="#fcb9aa"
-            color="white"
-            fontFamily={"'Nanum Gothic', sans-serif"}
-            fontSize={14}
-            borderRadius="8px"
-            boxShadow="0 0 8px rgba(0, 0, 0, 0.2)"
-            _after={{
-              content: '""',
-              position: "absolute",
-              bottom: "-7px",
-              left: "5px",
-              transform: "translateY(50%)",
-              borderWidth: "8px",
-              borderStyle: "solid",
-              borderColor: "#fcb9aa transparent transparent transparent",
-            }}
-          >
-            <Flex justifyContent="space-between" alignItems="center">
-              <Box>
-                <Box>사이드바를 열어 로그인하거나</Box>
-                <Box>히스토리를 볼 수 있어요!</Box>
-              </Box>
-              <IconButton
-                aria-label="Close tooltip"
-                icon={<CloseIcon />}
-                onClick={handleTooltipClose}
-                variant="ghost"
-                size="xs"
-                color="white"
-                _hover={{ bg: "none" }}
-                position="absolute"
-                top="0px"
-                right="0px"
-              />
-            </Flex>
-          </Box>
-        </Box>
-      )}
     </>
   );
 };
