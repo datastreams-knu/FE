@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Box, Text } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 
 interface MessageListProps {
   messages: string[];
@@ -43,32 +43,33 @@ export const MessageList: React.FC<MessageListProps> = ({ messages }) => {
       p="10px"
       m="0 auto 60px"
     >
-      {messages
-        .slice() // 원본 배열 복사
-        .map((message, index) => {
-          const isEven = index % 2 === 1;
+      {messages.map((message, index) => {
+        const isEven = index % 2 === 1;
 
-          return (
-            <Box
-              key={index}
-              m="5px 0"
-              p="10px"
-              bg={isEven ? "#DDD8C6" : "#FFDFB8"}
-              borderRadius="8px"
-              maxW="80%"
-              alignSelf={isEven ? "flex-start" : "flex-end"}
-              wordBreak="break-word"
-              fontSize={{ base: "xl", md: "2xl" }}
-              animation="fadeIn 0.5s ease" // CSS 애니메이션
-              style={{
-                opacity: 0,
-                animation: "fadeIn 0.5s ease forwards",
-              }}
-            >
-              <Text>{message}</Text>
-            </Box>
-          );
-        })}
+        return (
+          <Box
+            key={index}
+            m="5px 0"
+            p="10px"
+            bg={isEven ? "#DDD8C6" : "#FFDFB8"}
+            borderRadius="8px"
+            maxW="80%"
+            alignSelf={isEven ? "flex-start" : "flex-end"}
+            wordBreak="break-word"
+            fontSize={{ base: "xl", md: "2xl" }}
+            animation="fadeIn 0.5s ease" // CSS 애니메이션
+            style={{
+              opacity: 0,
+              animation: "fadeIn 0.5s ease forwards",
+              whiteSpace: "pre-line", // 줄 띄움 처리
+              lineHeight: "1", // 줄 간격 설정
+            }}
+            dangerouslySetInnerHTML={{
+              __html: message, // HTML 콘텐츠로 처리
+            }}
+          />
+        );
+      })}
     </Box>
   );
 };

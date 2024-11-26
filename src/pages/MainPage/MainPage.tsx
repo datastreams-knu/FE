@@ -52,24 +52,32 @@ const MainPage = () => {
         const data: ResponseData = await response.json();
         console.log("응답 데이터:", data);
 
-        // response와 필드 유효성 검사
-        if (!data) {
-          throw new Error("응답 데이터가 예상한 구조와 다릅니다.");
+        // URL을 링크로 변환하는 함수
+        const makeLinksClickable = (text: string) => {
+          const urlRegex = /(https?:\/\/[^\s]+)/g; // URL 패턴
+          return text.replace(
+            urlRegex,
+            (url) =>
+              `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color: blue; text-decoration: underline;">${url}</a>`
+          );
+        };
+
+        const cleanText = (text: string) => text.replace(/^\s+|\s+$/g, ""); // 공백 및 줄바꿈 제거
+
+        const formattedResponse = `${cleanText(data.answer)}
+        ${
+          data.images?.length && data.images[0] !== "No content"
+            ? data.images
+                .map(
+                  (url) =>
+                    `<img src="${url}" alt="이미지" style="max-width: 100%; height: auto; margin-top: 10px;" />`
+                )
+                .join("\n")
+            : ""
         }
+        ${data.disclaimer}
+        ${makeLinksClickable(data.references)}`.trim();
 
-        // 이미지 처리
-        const images =
-          Array.isArray(data.images) &&
-          data.images.length > 0 &&
-          data.images[0] !== "No content"
-            ? `\n\n${data.images
-                .map((url: string) => `<img src="${url}" width="300" />`)
-                .join("\n")}`
-            : "";
-
-        console.log("이미지 처리 완료:", images);
-
-        const formattedResponse = `${data.answer}\n\n${data.references}\n\n${data.disclaimer}${images}`;
         setMessages((prev) => [...prev, formattedResponse]);
       } catch (error) {
         console.error("에러 발생:", error);
