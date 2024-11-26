@@ -1,4 +1,12 @@
-import { Box, IconButton, Flex, Link, Button, Image } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  IconButton,
+  Flex,
+  Link,
+  Button,
+  Image,
+} from "@chakra-ui/react";
 import {
   ArrowForwardIcon,
   ArrowBackIcon,
@@ -120,8 +128,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
               color="#C73732"
               fontFamily={"Nanum Pen Script"}
             >
-              <Box fontSize="45px">경북대 컴퓨터학부</Box>
-              <Box fontSize="45px" mt="-10px">
+              <Box fontSize="50px">경북대 컴퓨터학부</Box>
+              <Box fontSize="50px" mt="-10px">
                 학사 정보 챗봇
               </Box>
             </Box>
@@ -131,15 +139,15 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
               variant="unstyled"
               background={"#B8433A"}
               width="250px"
-              alignItems={"center"}
               height="45px"
-              fontSize={35}
+              display={"flex"}
+              fontSize={27}
               fontWeight={100}
-              letterSpacing={"0.1em"}
+              letterSpacing={"0.3em"}
               onClick={handleLogin}
               _hover={{ bg: "#7E2B24" }}
             >
-              로그인
+              <Text mr={-2}>로그인</Text>
             </Button>
           </Flex>
         )}
