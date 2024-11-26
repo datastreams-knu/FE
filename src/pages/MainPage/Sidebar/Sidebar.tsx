@@ -114,7 +114,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             mt={8}
             width="100%"
           >
-            <Box textAlign="center" mb={4} color="#C73732">
+            <Box
+              textAlign="center"
+              mb={4}
+              color="#C73732"
+              fontFamily={"Nanum Pen Script"}
+            >
               <Box fontSize="45px">경북대 컴퓨터학부</Box>
               <Box fontSize="45px" mt="-10px">
                 학사 정보 챗봇
@@ -126,9 +131,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
               variant="unstyled"
               background={"#B8433A"}
               width="250px"
+              alignItems={"center"}
               height="45px"
-              fontSize={30}
-              fontWeight={"light"}
+              fontSize={35}
+              fontWeight={100}
               letterSpacing={"0.1em"}
               onClick={handleLogin}
               _hover={{ bg: "#7E2B24" }}
