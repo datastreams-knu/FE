@@ -183,6 +183,7 @@ const MainPage = () => {
                 objectFit="contain"
               />
               <Flex
+                direction={{ base: "column", md: "row" }} // base: 세로, md 이상: 가로
                 wrap="wrap"
                 gap={4}
                 justify="center"
@@ -195,29 +196,25 @@ const MainPage = () => {
                   fontWeight="medium"
                   bg="#EAE6DA"
                   _hover={{ bg: "#DDD8C6", transform: "scale(1.05)" }}
-                  onClick={() => handleSendMessage("최근 공지사항 알려줘")}
+                  onClick={() => handleSendMessage("해외 인턴십 정보 알려줘")}
                 >
-                  최근 공지사항 알려줘
+                  해외 인턴십 정보 알려줘
                 </Button>
                 <Button
                   fontSize="2xl"
                   fontWeight="medium"
                   bg="#EAE6DA"
                   _hover={{ bg: "#DDD8C6", transform: "scale(1.05)" }}
-                  onClick={() =>
-                    handleSendMessage("점심 제공하는 세미나 알려줘")
-                  }
+                  onClick={() => handleSendMessage("지도교수 상담 일정 알려줘")}
                 >
-                  점심 제공하는 세미나 알려줘
+                  지도교수 상담 일정 알려줘
                 </Button>
                 <Button
                   fontSize="2xl"
                   fontWeight="medium"
                   bg="#EAE6DA"
                   _hover={{ bg: "#DDD8C6", transform: "scale(1.05)" }}
-                  onClick={() =>
-                    handleSendMessage("컴퓨터학부 대회 정보 알려줘")
-                  }
+                  onClick={() => handleSendMessage("참여가능한 대회 알려줘")}
                 >
                   참여가능한 대회 알려줘
                 </Button>
@@ -226,18 +223,20 @@ const MainPage = () => {
                   fontWeight="medium"
                   bg="#EAE6DA"
                   _hover={{ bg: "#DDD8C6", transform: "scale(1.05)" }}
-                  onClick={() => handleSendMessage("졸업요건에 대해 알려줘")}
+                  onClick={() => handleSendMessage("심컴 졸업요건 알려줘")}
                 >
-                  졸업요건에 대해 알려줘
+                  심컴 졸업요건 알려줘
                 </Button>
                 <Button
                   fontSize="2xl"
                   fontWeight="medium"
                   bg="#EAE6DA"
                   _hover={{ bg: "#DDD8C6", transform: "scale(1.05)" }}
-                  onClick={() => handleSendMessage("수강신청 언제야")}
+                  onClick={() =>
+                    handleSendMessage("동계 계절학기 수강신청 언제야")
+                  }
                 >
-                  수강신청 언제야
+                  동계 계절학기 수강신청 언제야
                 </Button>
               </Flex>
             </Flex>
