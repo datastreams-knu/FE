@@ -139,7 +139,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                 학사 정보 챗봇
               </Box>
             </Box>
-            <Image src={knuLogo} alt="KNU Logo" w="100px" h="100px" />
+            <Image src={knuLogo} alt="KNU Logo" w="120px" h="120px" mt={-3} />
             <Box as="hr" width="90%" borderTop="1px solid white" my={5} />
             <Button
               variant="unstyled"
