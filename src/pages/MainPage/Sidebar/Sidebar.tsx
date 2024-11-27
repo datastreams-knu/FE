@@ -88,7 +88,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             <Box
               textAlign="center"
               mb={4}
-              fontSize={{ base: "25px", md: "50px" }}
+              fontSize={{ base: "36px", md: "50px" }}
               color="#C73732"
               fontFamily={"Nanum Pen Script"}
             >
