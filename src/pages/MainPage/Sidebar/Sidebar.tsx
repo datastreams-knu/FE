@@ -123,13 +123,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             <Box
               textAlign="center"
               mb={4}
+              fontSize={{ base: "35px", md: "50px" }}
               color="#C73732"
               fontFamily={"Nanum Pen Script"}
             >
-              <Box fontSize="50px">경북대 컴퓨터학부</Box>
-              <Box fontSize="50px" mt="-10px">
-                학사 정보 챗봇
-              </Box>
+              <Box>경북대 컴퓨터학부</Box>
+              <Box mt="-10px">학사 정보 챗봇</Box>
             </Box>
             <Box
               as="hr"
@@ -161,7 +160,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                 background={"#B8433A"}
                 width="250px"
                 height="45px"
-                fontSize={27}
+                fontSize={{ base: "22px", md: "27px" }}
                 fontWeight={100}
                 letterSpacing={"0.2em"}
                 onClick={handleLogin}
@@ -171,10 +170,29 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                 <Text mr={-2}>로그인</Text>
               </Button>
               <Box
+                width={"80%"}
+                height={"280px"}
+                mt={10}
+                ml={"auto"}
+                mr={"auto"}
+                borderRadius={"md"}
+                display={"flex"}
+                justifyContent={"center"}
+                alignItems={"center"}
+                color={"black"}
+                fontSize={{ base: "20px", md: "24px" }}
+                background={"red.100"}
+              >
+                채팅 히스토리가 들어갈 부분
+              </Box>
+              <Box
                 fontFamily="'Nanum Gothic', sans-serif"
-                fontSize="12px"
+                fontSize={{ base: "10px", md: "12px" }}
                 mt={5}
-                padding="20px"
+                padding="30px"
+                pb={20}
+                ml={"auto"}
+                mr={"auto"}
                 lineHeight={1.5}
                 textAlign="left"
                 color="black"
