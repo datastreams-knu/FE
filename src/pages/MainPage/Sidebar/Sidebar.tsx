@@ -1,11 +1,14 @@
-import { Box, Text, IconButton, Flex, Link, Button } from "@chakra-ui/react";
 import {
-  ArrowForwardIcon,
-  ArrowBackIcon,
-  InfoOutlineIcon,
-  CloseIcon,
-} from "@chakra-ui/icons";
-import React, { useEffect, useState } from "react";
+  Box,
+  Text,
+  IconButton,
+  Flex,
+  Link,
+  Button,
+  useBreakpointValue,
+} from "@chakra-ui/react";
+import { ArrowForwardIcon, ArrowBackIcon } from "@chakra-ui/icons";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 
 interface SidebarProps {
@@ -13,59 +16,30 @@ interface SidebarProps {
   toggleSidebar: () => void;
 }
 
-const ONE_DAY_MS = 24 * 60 * 60 * 1000; // 하루를 밀리초로 계산
-
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
-  const [showTooltip, setShowTooltip] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const tooltipDismissedTime = localStorage.getItem("tooltipDismissedTime");
-    const now = Date.now();
-    let timer: ReturnType<typeof setTimeout>;
-
-    const isTooltipExpired =
-      !tooltipDismissedTime || now - Number(tooltipDismissedTime) > ONE_DAY_MS;
-
-    if (isTooltipExpired && !isOpen) {
-      timer = setTimeout(() => {
-        setShowTooltip(true);
-      }, 500);
-    } else {
-      setShowTooltip(false);
-    }
-
-    return () => {
-      if (timer) {
-        clearTimeout(timer);
-      }
-    };
-  }, [isOpen]);
+  const transitionDuration = useBreakpointValue({ base: "0.3s", md: "0.5s" });
 
   const handleLogin = () => {
     navigate("/login"); // 페이지를 이동
   };
 
-  const handleTooltipClose = () => {
-    localStorage.setItem("tooltipDismissedTime", String(Date.now())); // 현재 시간 저장
-    setShowTooltip(false);
-  };
-
   return (
     <>
       <Box
-        width="340px"
+        width={{ base: "260px", md: "340px" }}
         height="100vh"
         bg="#fcb9aa"
         color="white"
         position="fixed"
         top="0"
-        left={isOpen ? "0" : "-340px"}
-        transition="left 0.5s ease-in-out"
+        left={isOpen ? "0" : { base: "-260px", md: "-340px" }}
+        transition={`left ${transitionDuration} ease-in-out`}
         zIndex={10000}
         textAlign="center"
         paddingTop="16px"
       >
+        {/* 사이드바 버튼 */}
         <IconButton
           aria-label={isOpen ? "Close sidebar" : "Open sidebar"}
           icon={
@@ -87,7 +61,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           borderRadius="50%"
           w="100px"
           h="100px"
-          zIndex={20000}
+          zIndex={-1}
           opacity="0.6"
           _hover={{
             bg: "#fcb9aa",
@@ -99,15 +73,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
               height: "40px",
               marginLeft: "50px",
             },
-            "&::before": {
-              content: '""',
-              position: "absolute",
-              top: "-10px",
-              bottom: "-10px",
-              left: "-10px",
-              right: "-10px",
-              background: "transparent",
-            },
           }}
         />
 
@@ -118,12 +83,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             justifyContent="flex-start"
             mt={8}
             width="100%"
-            height="calc(100vh - 16px)" // 전체 높이 지정 (뷰포트 기준)
+            height="calc(100vh - 16px)"
           >
             <Box
               textAlign="center"
               mb={4}
-              fontSize={{ base: "35px", md: "50px" }}
+              fontSize={{ base: "25px", md: "50px" }}
               color="#C73732"
               fontFamily={"Nanum Pen Script"}
             >
@@ -139,7 +104,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             />
             <Box
               flex="1"
-              overflowY="auto" // 스크롤 가능
+              overflowY="auto"
               width="100%"
               padding="10px"
               css={{
@@ -147,8 +112,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                   width: "8px",
                 },
                 "&::-webkit-scrollbar-thumb": {
-                  background: "#FFD0C6",
-                  borderRadius: "4px",
+                  background: "#fcb9aa",
+                  borderRadius: "3px",
                 },
                 "&::-webkit-scrollbar-track": {
                   background: "#fcb9aa",
@@ -158,7 +123,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
               <Button
                 variant="unstyled"
                 background={"#B8433A"}
-                width="250px"
+                width={{ base: "200px", md: "250px" }}
                 height="45px"
                 fontSize={{ base: "22px", md: "27px" }}
                 fontWeight={100}
@@ -170,7 +135,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                 <Text mr={-2}>로그인</Text>
               </Button>
               <Box
-                width={"80%"}
+                width={{ base: "200px", md: "250px" }}
                 height={"280px"}
                 mt={10}
                 ml={"auto"}
@@ -181,7 +146,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                 alignItems={"center"}
                 color={"black"}
                 fontSize={{ base: "20px", md: "24px" }}
-                background={"red.100"}
+                background={"transparent"}
+                border={"2px solid #7E2B24"}
               >
                 채팅 히스토리가 들어갈 부분
               </Box>
@@ -189,8 +155,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                 fontFamily="'Nanum Gothic', sans-serif"
                 fontSize={{ base: "10px", md: "12px" }}
                 mt={5}
-                padding="30px"
-                pb={20}
+                pl={{ base: "15px", md: "30px" }}
+                pr={0}
+                pt={5}
+                pb={50}
                 ml={"auto"}
                 mr={"auto"}
                 lineHeight={1.5}
@@ -217,71 +185,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
               </Box>
             </Box>
           </Flex>
-        )}
-
-        {!isOpen && showTooltip && (
-          <Box
-            position="fixed"
-            top="45%"
-            transform="translateY(-50%)"
-            display="flex"
-            alignItems="center"
-            zIndex={9999}
-            animation="bounce 2s ease-in-out infinite"
-            sx={{
-              "@keyframes bounce": {
-                "0%, 100%": {
-                  transform: "translateY(-60%)",
-                },
-                "50%": {
-                  transform: "translateY(-80%)",
-                },
-              },
-            }}
-          >
-            <InfoOutlineIcon boxSize={5} color="transparent" />
-            <Box
-              position="relative"
-              width="240px"
-              mt={-110}
-              p={4}
-              bg="#fcb9aa"
-              color="white"
-              fontFamily={"'Nanum Gothic', sans-serif"}
-              fontSize={14}
-              borderRadius="8px"
-              boxShadow="0 0 8px rgba(0, 0, 0, 0.2)"
-              _after={{
-                content: '""',
-                position: "absolute",
-                bottom: "-7px",
-                left: "5px",
-                transform: "translateY(50%)",
-                borderWidth: "8px",
-                borderStyle: "solid",
-                borderColor: "#fcb9aa transparent transparent transparent",
-              }}
-            >
-              <Flex justifyContent="space-between" alignItems="center">
-                <Box>
-                  <Box>사이드바를 열어 로그인하거나</Box>
-                  <Box>히스토리를 볼 수 있어요!</Box>
-                </Box>
-                <IconButton
-                  aria-label="Close tooltip"
-                  icon={<CloseIcon />}
-                  onClick={handleTooltipClose}
-                  variant="ghost"
-                  size="xs"
-                  color="white"
-                  _hover={{ bg: "none" }}
-                  position="absolute"
-                  top="0px"
-                  right="0px"
-                />
-              </Flex>
-            </Box>
-          </Box>
         )}
       </Box>
     </>
