@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { MessageInput } from "./MessageInput/MessageInput";
 import { MessageList } from "./messageList/MessageList";
 import { Sidebar } from "./Sidebar/Sidebar";
+import { IntroModal } from "./introModal";
 import { Box, Flex, Spinner, Text, Button, Image } from "@chakra-ui/react";
 import tutorial1 from "@/assets/tutorial1.svg";
 import tutorial2 from "@/assets/tutorial2.svg";
@@ -16,6 +17,7 @@ const MainPage = () => {
   const [inputHeight, setInputHeight] = useState(36);
   const [loading, setLoading] = useState(false);
   const [tutorialImage, setTutorialImage] = useState<string>(""); // 랜덤 이미지 상태 추가
+  const [isModalOpen, setModalOpen] = useState(false); // 모달 상태 추가
   const pageRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const prevHeightRef = useRef<number>(0); // 이전 높이를 저장할 ref
@@ -132,6 +134,9 @@ const MainPage = () => {
     setSidebarOpen((prev) => !prev);
   };
 
+  const openModal = () => setModalOpen(true); // 모달 열기
+  const closeModal = () => setModalOpen(false); // 모달 닫기
+
   return (
     <Box
       ref={pageRef}
@@ -175,6 +180,38 @@ const MainPage = () => {
             w="100%"
           >
             <Flex direction="column" align="center">
+              <Box
+                alignSelf="flex-start"
+                p={10}
+                sx={{
+                  "@keyframes textAnimation": {
+                    "0%, 10%, 20%, 100%": { opacity: 1 },
+                    "5%, 15%": { opacity: 0 },
+                  },
+                  animation: "textAnimation 6s ease-in-out infinite", // keyframes 적용
+                }}
+                onClick={openModal} // 모달 열기 버튼
+                cursor={"pointer"} // 커서 모양 변경
+              >
+                <Text
+                  fontSize={{ base: "xl", md: "2xl" }}
+                  fontWeight="bold"
+                  color="#555"
+                  textAlign="center"
+                  position="relative" // ::after를 사용하려면 position 필요
+                  _after={{
+                    content: '""', // 빈 내용
+                    position: "absolute",
+                    left: "0",
+                    bottom: "3px", // 텍스트 아래 간격
+                    width: "100%", // 텍스트 길이에 맞춤
+                    height: "1px",
+                    borderBottom: "2px dashed #555",
+                  }}
+                >
+                  챗봇 더 알아보기
+                </Text>
+              </Box>
               <Image
                 src={tutorialImage}
                 alt="Tutorial"
@@ -247,7 +284,6 @@ const MainPage = () => {
             <div ref={bottomRef} />
           </Box>
         )}
-
         <Box
           w="100%"
           h={loading ? "60px" : "0"}
@@ -272,7 +308,6 @@ const MainPage = () => {
             </Flex>
           )}
         </Box>
-
         <Box w="90%" maxW="800px" mt="20px" position="relative" mb="20px">
           <MessageInput
             inputMessage={inputMessage}
@@ -282,6 +317,8 @@ const MainPage = () => {
             isLoading={loading}
           />
         </Box>
+        <IntroModal isOpen={isModalOpen} onClose={closeModal} />{" "}
+        {/* 모달 컴포넌트 */}
       </Flex>
     </Box>
   );
