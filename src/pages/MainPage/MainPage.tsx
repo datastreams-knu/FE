@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { MessageInput } from "./MessageInput/MessageInput";
 import { MessageList } from "./messageList/MessageList";
 import { Sidebar } from "./Sidebar/Sidebar";
-import { IntroModal } from "./introModal";
+import { IntroModal } from "./IntroModal";
 import { Box, Flex, Spinner, Text, Button, Image } from "@chakra-ui/react";
 import tutorial1 from "@/assets/tutorial1.svg";
 import tutorial2 from "@/assets/tutorial2.svg";
