@@ -1,3 +1,4 @@
+// 서비스의 사용 설명서를 보여주는 모달 컴포넌트
 import React from "react";
 import {
   Modal,

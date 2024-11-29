@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import MainPage from "@/pages/MainPage/MainPage";
+import GuestPage from "@/pages/MainPage/GuestPage";
 import LoginPage from "@/pages/LoginPage/LoginPage";
 import SignupPage from "@/pages/SignupPage/SignupPage";
 import { RouterPath } from "./path"; // 경로 상수 가져오기
@@ -8,7 +8,7 @@ import { RouterPath } from "./path"; // 경로 상수 가져오기
 const router = createBrowserRouter([
   {
     path: RouterPath.root,
-    element: <MainPage />, // 메인 페이지를 직접 렌더링
+    element: <GuestPage />, // 메인 페이지를 직접 렌더링
   },
   {
     path: RouterPath.login,

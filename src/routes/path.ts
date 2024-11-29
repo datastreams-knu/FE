@@ -1,6 +1,6 @@
 export const RouterPath = {
   root: "/",
-  main: "/",
+  user: "/user",
   login: "/login",
   signup: "/signup",
 };

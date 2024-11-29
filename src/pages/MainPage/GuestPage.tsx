@@ -1,3 +1,4 @@
+// 로그인 하지 않은 사용자의 메인 페이지 컴포넌트
 import { useState, useEffect, useRef } from "react";
 import { MessageInput } from "./MessageInput/MessageInput";
 import { MessageList } from "./messageList/MessageList";
@@ -10,7 +11,7 @@ import tutorial3 from "@/assets/tutorial3.svg";
 import tutorial4 from "@/assets/tutorial4.svg";
 import tutorial5 from "@/assets/tutorial5.svg";
 
-const MainPage = () => {
+const GuestPage = () => {
   const [messages, setMessages] = useState<string[]>([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -330,4 +331,4 @@ const MainPage = () => {
   );
 };
 
-export default MainPage;
+export default GuestPage;
