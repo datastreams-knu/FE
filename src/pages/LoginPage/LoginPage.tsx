@@ -53,7 +53,8 @@ const LoginPage: React.FC = () => {
           <Input
             placeholder="이메일"
             bg="white"
-            fontSize={"xl"}
+            fontSize={"md"}
+            fontFamily={"mono"}
             focusBorderColor="#DCD8C8"
           />
           {/* 비밀번호 입력 */}
@@ -61,7 +62,8 @@ const LoginPage: React.FC = () => {
             placeholder="비밀번호"
             type="password"
             bg="white"
-            fontSize={"xl"}
+            fontSize={"md"}
+            fontFamily={"mono"}
             focusBorderColor="#DCD8C8"
           />
           {/* 로그인 버튼 */}

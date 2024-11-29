@@ -158,7 +158,8 @@ const SignupPage: React.FC = () => {
               <Input
                 placeholder="이메일"
                 bg="white"
-                fontSize={"xl"}
+                fontSize={"md"}
+                fontFamily={"mono"}
                 focusBorderColor="#DCD8C8"
                 value={email}
                 onChange={(e) => {
@@ -195,7 +196,8 @@ const SignupPage: React.FC = () => {
               type={showPassword ? "text" : "password"} // 비밀번호 보이기/숨기기
               bg="white"
               color="black"
-              fontSize={"xl"}
+              fontSize={"md"}
+              fontFamily={"mono"}
               focusBorderColor="#DCD8C8"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -217,7 +219,8 @@ const SignupPage: React.FC = () => {
           <Input
             placeholder="닉네임"
             bg="white"
-            fontSize={"xl"}
+            fontSize={"md"}
+            fontFamily={"mono"}
             focusBorderColor="#DCD8C8"
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
