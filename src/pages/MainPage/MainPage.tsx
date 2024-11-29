@@ -208,6 +208,12 @@ const MainPage = () => {
                     height: "1px",
                     borderBottom: "2px dashed #555",
                   }}
+                  _hover={{
+                    color: "#7E2B24", // 텍스트 색상 변경
+                    _after: {
+                      borderBottomColor: "#7E2B24", // 밑줄 색상 변경
+                    },
+                  }}
                 >
                   챗봇 더 알아보기
                 </Text>
