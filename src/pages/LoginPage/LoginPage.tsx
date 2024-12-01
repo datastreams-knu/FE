@@ -105,7 +105,7 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <Box alignContent={"center"} bg="#f3f2ec" height={"100vh"}>
+    <Box alignContent={"center"} bg="#f3f2ec" minHeight="100vh">
       {/* 상단 왼쪽에 이전 페이지 버튼 */}
       <Box position="absolute" top="20px" left="20px">
         <IconButton
