@@ -67,7 +67,9 @@ const GuestPage = () => {
 
         const cleanText = (text: string) => text.replace(/^\s+|\s+$/g, ""); // 공백 및 줄바꿈 제거
 
-        const formattedResponse = `${cleanText(data.answer)}
+        const formattedResponse = `${
+          data.answer ? cleanText(data.answer) : ""
+        }  <!-- null일 경우 제거 -->
         ${
           data.images?.length && data.images[0] !== "No content"
             ? data.images
