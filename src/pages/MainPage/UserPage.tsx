@@ -217,63 +217,6 @@ const UserPage = () => {
               >
                 로그아웃
               </Button>
-              <Flex
-                direction={{ base: "column", md: "row" }} // base: 세로, md 이상: 가로
-                wrap="wrap"
-                gap={4}
-                justify="center"
-                mt="6"
-                px={4}
-                maxW="800px"
-              >
-                <Button
-                  fontSize="2xl"
-                  fontWeight="medium"
-                  bg="#EAE6DA"
-                  _hover={{ bg: "#DDD8C6", transform: "scale(1.05)" }}
-                  onClick={() => handleSendMessage("해외 인턴십 정보 알려줘")}
-                >
-                  해외 인턴십 정보 알려줘
-                </Button>
-                <Button
-                  fontSize="2xl"
-                  fontWeight="medium"
-                  bg="#EAE6DA"
-                  _hover={{ bg: "#DDD8C6", transform: "scale(1.05)" }}
-                  onClick={() => handleSendMessage("지도교수 상담 일정 알려줘")}
-                >
-                  지도교수 상담 일정 알려줘
-                </Button>
-                <Button
-                  fontSize="2xl"
-                  fontWeight="medium"
-                  bg="#EAE6DA"
-                  _hover={{ bg: "#DDD8C6", transform: "scale(1.05)" }}
-                  onClick={() => handleSendMessage("참여가능한 대회 알려줘")}
-                >
-                  참여가능한 대회 알려줘
-                </Button>
-                <Button
-                  fontSize="2xl"
-                  fontWeight="medium"
-                  bg="#EAE6DA"
-                  _hover={{ bg: "#DDD8C6", transform: "scale(1.05)" }}
-                  onClick={() => handleSendMessage("심컴 졸업요건 알려줘")}
-                >
-                  심컴 졸업요건 알려줘
-                </Button>
-                <Button
-                  fontSize="2xl"
-                  fontWeight="medium"
-                  bg="#EAE6DA"
-                  _hover={{ bg: "#DDD8C6", transform: "scale(1.05)" }}
-                  onClick={() =>
-                    handleSendMessage("동계 계절학기 수강신청 언제야")
-                  }
-                >
-                  동계 계절학기 수강신청 언제야
-                </Button>
-              </Flex>
             </Flex>
           </Flex>
         ) : (

@@ -48,9 +48,9 @@ const SignupPage: React.FC = () => {
           setEmailCheckDone(true); // 이메일 중복 검사 성공
           setEmailCheckMessage("가입 가능한 이메일입니다.");
         }
-      } else if (response.status === 400) {
+      } else if (response.status === 401) {
         setEmailCheckDone(false);
-        setEmailCheckMessage("이메일에 공란이 있습니다.");
+        setEmailCheckMessage("올바르지 않은 이메일 형식입니다.");
       } else {
         setEmailCheckDone(false);
         setEmailCheckMessage("오류가 발생했습니다. 다시 시도해주세요.");

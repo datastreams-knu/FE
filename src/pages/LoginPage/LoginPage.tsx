@@ -66,7 +66,7 @@ const LoginPage: React.FC = () => {
           isClosable: true,
           position: "top",
         });
-        navigate("/dashboard"); // 로그인 성공 후 대시보드로 이동
+        navigate("/"); // 로그인 성공 후 대시보드로 이동
       } else if (response.status === 400) {
         toast({
           title: "이메일과 비밀번호를 모두 입력해주세요.",
