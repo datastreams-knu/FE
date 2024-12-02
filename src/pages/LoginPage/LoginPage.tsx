@@ -10,31 +10,30 @@ import {
   Box,
   IconButton,
   useToast,
+  Spinner,
 } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
-import { useNavigate } from "react-router-dom"; // React Router 사용
+import { useNavigate } from "react-router-dom";
 
-import loginHobanu from "./assets/loginHobanu.svg"; // 이미지 경로를 맞게 설정하세요
+import loginHobanu from "./assets/loginHobanu.svg";
 
-const baseURL = import.meta.env.VITE_BASE_URL; // 환경 변수에서 baseURL 가져오기
+const baseURL = import.meta.env.VITE_BASE_URL;
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const toast = useToast(); // Toast 사용
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 관리
+  const toast = useToast();
   const navigate = useNavigate();
 
-  // 이전 페이지로 이동
   const handleBack = () => {
     navigate(-1);
   };
 
-  // 회원가입 페이지로 이동
   const handleSignup = () => {
     navigate("/signup");
   };
 
-  // 로그인 API 요청
   const handleLogin = async () => {
     if (!email || !password) {
       toast({
@@ -47,6 +46,8 @@ const LoginPage: React.FC = () => {
       return;
     }
 
+    setIsLoading(true); // 로딩 상태 활성화
+
     try {
       const response = await fetch(`${baseURL}/api/member/login`, {
         method: "POST",
@@ -58,7 +59,7 @@ const LoginPage: React.FC = () => {
 
       if (response.status === 200) {
         const data = await response.json();
-        localStorage.setItem("accessToken", data.accessToken); // access token 저장
+        localStorage.setItem("accessToken", data.accessToken);
         toast({
           title: "로그인 성공!",
           status: "success",
@@ -66,7 +67,7 @@ const LoginPage: React.FC = () => {
           isClosable: true,
           position: "top",
         });
-        navigate("/"); // 로그인 성공 후 대시보드로 이동
+        navigate("/");
       } else if (response.status === 400) {
         toast({
           title: "이메일과 비밀번호를 모두 입력해주세요.",
@@ -101,12 +102,40 @@ const LoginPage: React.FC = () => {
         isClosable: true,
         position: "top",
       });
+    } finally {
+      setIsLoading(false); // 로딩 상태 비활성화
+    }
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter" && !isLoading) {
+      handleLogin();
     }
   };
 
   return (
     <Box alignContent={"center"} bg="#f3f2ec" minHeight="100vh">
-      {/* 상단 왼쪽에 이전 페이지 버튼 */}
+      {/* 로딩 중일 때 화면 전체를 덮는 로딩 레이어 */}
+      {isLoading && (
+        <Box
+          position="fixed"
+          top="0"
+          left="0"
+          width="100%"
+          height="100%"
+          bg="rgba(0, 0, 0, 0.4)" // 반투명 배경
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          zIndex="1000" // 다른 요소 위로 오도록 설정
+        >
+          <Spinner size="xl" color="white" />
+          <Text color="white" fontSize="2xl" ml="4">
+            로딩 중...
+          </Text>
+        </Box>
+      )}
+
       <Box position="absolute" top="20px" left="20px">
         <IconButton
           aria-label="Go Back"
@@ -115,19 +144,13 @@ const LoginPage: React.FC = () => {
           bg="#DCD8C8"
           color="black"
           _hover={{ bg: "#AAA282" }}
+          isDisabled={isLoading} // 로딩 중 비활성화
         />
       </Box>
 
       <Center p={8} pb={120} maxW="500px" mx="auto">
         <Stack spacing={7} align="center" w="full">
-          {/* 상단 캐릭터 이미지 */}
-          <Image
-            src={loginHobanu} // 로컬 이미지 사용
-            alt="Character"
-            boxSize="170px"
-            mb={3}
-          />
-          {/* 이메일 입력 */}
+          <Image src={loginHobanu} alt="Character" boxSize="170px" mb={3} />
           <Input
             placeholder="이메일"
             bg="white"
@@ -135,9 +158,9 @@ const LoginPage: React.FC = () => {
             fontFamily={"mono"}
             focusBorderColor="#DCD8C8"
             value={email}
-            onChange={(e) => setEmail(e.target.value)} // 이메일 상태 업데이트
+            onChange={(e) => setEmail(e.target.value)}
+            isDisabled={isLoading} // 로딩 중 비활성화
           />
-          {/* 비밀번호 입력 */}
           <Input
             placeholder="비밀번호"
             type="password"
@@ -146,9 +169,10 @@ const LoginPage: React.FC = () => {
             fontFamily={"mono"}
             focusBorderColor="#DCD8C8"
             value={password}
-            onChange={(e) => setPassword(e.target.value)} // 비밀번호 상태 업데이트
+            onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={handleKeyPress}
+            isDisabled={isLoading} // 로딩 중 비활성화
           />
-          {/* 로그인 버튼 */}
           <Button
             w="full"
             bg="#DCD8C8"
@@ -157,11 +181,10 @@ const LoginPage: React.FC = () => {
             fontWeight={"light"}
             letterSpacing={"0.1em"}
             _hover={{ bg: "#AAA282" }}
-            onClick={handleLogin} // 로그인 API 호출
+            onClick={handleLogin}
           >
             로그인하기
           </Button>
-          {/* 회원가입 링크 */}
           <Text fontSize="2xl" color="gray.600">
             아직 회원이 아니신가요?{" "}
             <Link color="#8B8469" onClick={handleSignup}>

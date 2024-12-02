@@ -190,7 +190,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                   >
                     히스토리
                   </Button>
-                  <Box width="2px" background="white" height="70%" />{" "}
+                  <Box
+                    width="2px"
+                    background="white"
+                    height="70%"
+                    borderRadius={"md"}
+                  />{" "}
                   {/* 버튼 간 구분선 */}
                   <Button
                     variant="unstyled"

@@ -260,9 +260,11 @@ const GuestPage = () => {
                   fontWeight="medium"
                   bg="#EAE6DA"
                   _hover={{ bg: "#DDD8C6", transform: "scale(1.05)" }}
-                  onClick={() => handleSendMessage("참여가능한 대회 알려줘")}
+                  onClick={() =>
+                    handleSendMessage("정설영 교수님 이메일 알려줘")
+                  }
                 >
-                  참여가능한 대회 알려줘
+                  정설영 교수님 이메일 알려줘
                 </Button>
                 <Button
                   fontSize="2xl"
