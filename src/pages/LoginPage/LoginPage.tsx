@@ -59,7 +59,7 @@ const LoginPage: React.FC = () => {
 
       if (response.status === 200) {
         const data = await response.json();
-        localStorage.setItem("accessToken", data.accessToken);
+        localStorage.setItem("accessToken", data.token);
         toast({
           title: "로그인 성공!",
           status: "success",

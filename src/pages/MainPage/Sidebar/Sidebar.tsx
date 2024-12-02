@@ -24,6 +24,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   const [selectedTab, setSelectedTab] = useState<"history" | "myInfo" | null>(
     null
   );
+  const [userInfo, setUserInfo] = useState<{
+    nickname: string;
+    joinedAt: string;
+  } | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -35,7 +40,54 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
     }
   }, []);
 
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      const baseURL = import.meta.env.VITE_BASE_URL; // 환경변수에서 baseURL 가져오기
+      const token = localStorage.getItem("accessToken"); // 로컬스토리지에서 토큰 가져오기
+
+      if (!token) {
+        setError("토큰이 없습니다.");
+        return;
+      }
+
+      try {
+        const response = await fetch(`${baseURL}/api/member/info`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // 토큰을 헤더에 추가
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setUserInfo(data); // API 응답 데이터를 상태에 저장
+        } else if (response.status === 400) {
+          console.log("토큰 오류: 400");
+          setError("토큰 오류: 400");
+        } else if (response.status === 404) {
+          console.log("잘못된 사용자: 404");
+          setError("잘못된 사용자: 404");
+        } else {
+          console.log("알 수 없는 오류:", response.status);
+          setError(`알 수 없는 오류: ${response.status}`);
+        }
+      } catch (err) {
+        console.log("API 호출 에러:", err);
+        setError("API 호출 중 오류가 발생했습니다.");
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
+
   const handleLogin = () => navigate("/login");
+
+  // 로그아웃 핸들러
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken"); // accessToken 제거
+    window.location.reload(); // 페이지 새로고침으로 GuestPage 렌더링
+  };
 
   return (
     <Box
@@ -136,7 +188,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             {!hasAccessToken ? (
               <Button
                 variant="unstyled"
-                background={"#B8433A"}
+                background={"#DD938D"}
                 width={{ base: "200px", md: "250px" }}
                 height="45px"
                 fontSize={{ base: "22px", md: "27px" }}
@@ -144,7 +196,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                 letterSpacing={"0.2em"}
                 onClick={handleLogin}
                 zIndex={30000}
-                _hover={{ bg: "#7E2B24" }}
+                boxShadow={"0 2px 4px rgba(0, 0, 0, 0.1)"} // 기본 그림자
+                _hover={{
+                  bg: "#B86D66", // 호버 시 진한 색상
+                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.2)", // 호버 시 그림자 추가
+                }}
               >
                 <Text mr={-2}>로그인</Text>
               </Button>
@@ -153,7 +209,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                 justifyContent="center" // Flex를 가로 방향으로 중앙 정렬
                 alignItems="center" // Flex를 세로 방향으로 중앙 정렬
                 mt={4}
-                width="100%" // 사이드바 너비를 가득 채움
               >
                 <Flex
                   justifyContent="space-between" // 버튼 간격 균등 분배
@@ -163,7 +218,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                   fontSize={{ base: "22px", md: "27px" }}
                   fontWeight={100}
                   letterSpacing={"0.2em"}
-                  background="#B8433A"
+                  background="#DD938D"
                   borderRadius="10px"
                   boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
                   overflow="hidden" // 버튼이 박스 바깥으로 나오지 않도록 설정
@@ -171,21 +226,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                   <Button
                     variant="unstyled"
                     background={
-                      selectedTab === "history" ? "#7E2B24" : "#B8433A"
-                    }
+                      selectedTab === "history" ? "#B86D66" : "#DD938D"
+                    } // 로그인 버튼 색상
                     color="white"
                     flex="1" // 두 버튼이 동일한 크기를 가지도록 설정
                     height="100%"
                     fontSize={{ base: "18px", md: "22px" }}
-                    fontWeight={selectedTab === "history" ? "bold" : "light"}
+                    fontWeight="light"
                     letterSpacing={"0.1em"}
-                    transition="all 0.3s"
                     onClick={() => setSelectedTab("history")}
-                    _hover={{
-                      background: "#6A211C",
-                    }}
                     _active={{
-                      transform: "scale(0.95)",
+                      background: "#B86D66", // 클릭 시 진한 색상
                     }}
                   >
                     히스토리
@@ -200,21 +251,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                   <Button
                     variant="unstyled"
                     background={
-                      selectedTab === "myInfo" ? "#7E2B24" : "#B8433A"
-                    }
+                      selectedTab === "myInfo" ? "#B86D66" : "#DD938D"
+                    } // 로그인 버튼 색상
                     color="white"
                     flex="1" // 두 버튼이 동일한 크기를 가지도록 설정
                     height="100%"
                     fontSize={{ base: "18px", md: "22px" }}
-                    fontWeight={selectedTab === "myInfo" ? "bold" : "light"}
+                    fontWeight="light"
                     letterSpacing={"0.1em"}
-                    transition="all 0.3s"
                     onClick={() => setSelectedTab("myInfo")}
-                    _hover={{
-                      background: "#6A211C",
-                    }}
                     _active={{
-                      transform: "scale(0.95)",
+                      background: "#B86D66", // 클릭 시 진한 색상
                     }}
                   >
                     내 정보
@@ -245,20 +292,53 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             {selectedTab === "myInfo" && (
               <Box
                 width={{ base: "200px", md: "250px" }}
-                height={"280px"}
+                display={"flex"}
+                flexDirection={"column"}
                 mt={10}
                 ml={"auto"}
                 mr={"auto"}
+                p={5}
                 borderRadius={"md"}
-                display={"flex"}
-                justifyContent={"center"}
-                alignItems={"center"}
+                textAlign={"left"}
                 color={"black"}
-                fontSize={{ base: "20px", md: "24px" }}
-                background={"transparent"}
-                border={"2px solid #7E2B24"}
+                fontSize={{ base: "20px", md: "26px" }}
+                background={"#F2B8AB"}
+                opacity={0.8}
+                boxShadow={
+                  "0px 4px 6px rgba(0, 0, 0, 0.1), 0px 2px 4px rgba(0, 0, 0, 0.06)"
+                } // 사용자 정의 그림자
               >
-                내 정보 내용이 표시됩니다.
+                {userInfo ? (
+                  <Box>
+                    <Text>닉네임: {userInfo.nickname}</Text>
+                    <Text>가입일: {userInfo.joinedAt.split("T")[0]}</Text>
+                  </Box>
+                ) : error ? (
+                  <Text color="red.500">{error}</Text>
+                ) : (
+                  <Text>정보를 불러오는 중...</Text>
+                )}
+                <Button
+                  mt={4}
+                  fontSize={{ base: "20px", md: "22px" }}
+                  fontWeight="medium"
+                  bg="#E7A8A3"
+                  color="black"
+                  _hover={{ bg: "#D17C74" }}
+                  onClick={handleLogout} // 로그아웃 버튼
+                >
+                  로그아웃
+                </Button>
+                <Button
+                  mt={4}
+                  fontSize={{ base: "20px", md: "22px" }}
+                  fontWeight="medium"
+                  bg="#E7A8A3"
+                  color="black"
+                  _hover={{ bg: "#D17C74" }}
+                >
+                  회원탈퇴
+                </Button>
               </Box>
             )}
             {/* 학부 정보 */}
