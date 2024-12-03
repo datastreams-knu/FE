@@ -11,6 +11,7 @@ import {
   useToast,
   InputGroup,
   InputRightElement,
+  Spinner,
 } from "@chakra-ui/react";
 import { ArrowBackIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
@@ -26,12 +27,14 @@ const SignupPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false); // 비밀번호 보이기/숨기기 상태
   const [emailCheckMessage, setEmailCheckMessage] = useState("");
   const [emailCheckDone, setEmailCheckDone] = useState(false); // 이메일 중복 검사 완료 여부
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
   const toast = useToast(); // Toast 인스턴스
   const navigate = useNavigate();
 
   // 이메일 중복 확인
   const handleEmailCheck = async () => {
     try {
+      setIsLoading(true); // 로딩 시작
       const response = await fetch(
         `${baseURL}/api/member/check-email?email=${email}`,
         {
@@ -61,12 +64,13 @@ const SignupPage: React.FC = () => {
       setEmailCheckMessage(
         "서버와 연결할 수 없습니다. 나중에 다시 시도해주세요."
       );
+    } finally {
+      setIsLoading(false); // 로딩 종료
     }
   };
 
   // 회원가입 요청
   const handleSignup = async () => {
-    // 이메일 중복 검사 완료 여부 확인
     if (!emailCheckDone) {
       toast({
         title: "이메일 중복 검사를 먼저 해주세요.",
@@ -79,6 +83,7 @@ const SignupPage: React.FC = () => {
     }
 
     try {
+      setIsLoading(true); // 로딩 시작
       const response = await fetch(`${baseURL}/api/member/signup`, {
         method: "POST",
         headers: {
@@ -126,16 +131,41 @@ const SignupPage: React.FC = () => {
         duration: 1500,
         isClosable: true,
       });
+    } finally {
+      setIsLoading(false); // 로딩 종료
     }
   };
 
   // 이전 페이지로 이동
   const handleBack = () => {
-    navigate(-1);
+    if (!isLoading) {
+      navigate(-1); // 로딩 중에는 작동하지 않도록 설정
+    }
   };
 
   return (
     <Box alignContent={"center"} bg="#f3f2ec" minHeight="100vh">
+      {/* 로딩 중일 때 화면 전체를 덮는 로딩 레이어 */}
+      {isLoading && (
+        <Box
+          position="fixed"
+          top="0"
+          left="0"
+          width="100%"
+          height="100%"
+          bg="rgba(0, 0, 0, 0.4)" // 반투명 배경
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          zIndex="1000" // 다른 요소 위로 오도록 설정
+        >
+          <Spinner size="xl" color="white" />
+          <Text color="white" fontSize="2xl" ml="4">
+            요청 처리 중...
+          </Text>
+        </Box>
+      )}
+
       {/* 상단 왼쪽에 이전 페이지 버튼 */}
       <Box position="absolute" top="20px" left="20px">
         <IconButton
@@ -145,6 +175,7 @@ const SignupPage: React.FC = () => {
           bg="#DCD8C8"
           color="black"
           _hover={{ bg: "#AAA282" }}
+          isDisabled={isLoading} // 로딩 중 비활성화
         />
       </Box>
 
@@ -159,7 +190,7 @@ const SignupPage: React.FC = () => {
                 placeholder="이메일"
                 bg="white"
                 fontSize={"sm"}
-                fontFamily={"mono"}
+                fontFamily={"Nanum Gothic"}
                 focusBorderColor="#DCD8C8"
                 value={email}
                 onChange={(e) => {
@@ -169,6 +200,7 @@ const SignupPage: React.FC = () => {
                     "이메일이 변경되었습니다. 중복 검사를 다시 수행해주세요."
                   );
                 }}
+                isDisabled={isLoading} // 로딩 중 비활성화
               />
               <Button
                 bg="#AAA282"
@@ -177,6 +209,7 @@ const SignupPage: React.FC = () => {
                 fontWeight={"light"}
                 _hover={{ bg: "#8B8469" }}
                 onClick={handleEmailCheck}
+                isDisabled={isLoading} // 로딩 중 비활성화
               >
                 중복 확인
               </Button>
@@ -197,10 +230,11 @@ const SignupPage: React.FC = () => {
               bg="white"
               color="black"
               fontSize={"sm"}
-              fontFamily={"mono"}
+              fontFamily={"Nanum Gothic"}
               focusBorderColor="#DCD8C8"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              isDisabled={isLoading} // 로딩 중 비활성화
             />
             <InputRightElement>
               <IconButton
@@ -211,6 +245,7 @@ const SignupPage: React.FC = () => {
                 onClick={() => setShowPassword(!showPassword)} // 상태 토글
                 bg="transparent"
                 _hover={{ bg: "transparent" }}
+                isDisabled={isLoading} // 로딩 중 비활성화
               />
             </InputRightElement>
           </InputGroup>
@@ -220,10 +255,11 @@ const SignupPage: React.FC = () => {
             placeholder="닉네임"
             bg="white"
             fontSize={"sm"}
-            fontFamily={"mono"}
+            fontFamily={"Nanum Gothic"}
             focusBorderColor="#DCD8C8"
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
+            isDisabled={isLoading} // 로딩 중 비활성화
           />
           {/* 회원가입 버튼 */}
           <Button
@@ -235,6 +271,7 @@ const SignupPage: React.FC = () => {
             letterSpacing={"0.1em"}
             _hover={{ bg: "#AAA282" }}
             onClick={handleSignup}
+            isDisabled={isLoading} // 로딩 중 비활성화
           >
             가입하기
           </Button>

@@ -60,13 +60,6 @@ const LoginPage: React.FC = () => {
       if (response.status === 200) {
         const data = await response.json();
         localStorage.setItem("accessToken", data.token);
-        toast({
-          title: "로그인 성공!",
-          status: "success",
-          duration: 1500,
-          isClosable: true,
-          position: "top",
-        });
         navigate("/");
       } else if (response.status === 400) {
         toast({
@@ -131,7 +124,7 @@ const LoginPage: React.FC = () => {
         >
           <Spinner size="xl" color="white" />
           <Text color="white" fontSize="2xl" ml="4">
-            로딩 중...
+            로그인 시도 중...
           </Text>
         </Box>
       )}
@@ -155,7 +148,7 @@ const LoginPage: React.FC = () => {
             placeholder="이메일"
             bg="white"
             fontSize={"sm"}
-            fontFamily={"mono"}
+            fontFamily={"Nanum Gothic"}
             focusBorderColor="#DCD8C8"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -166,7 +159,7 @@ const LoginPage: React.FC = () => {
             type="password"
             bg="white"
             fontSize={"sm"}
-            fontFamily={"mono"}
+            fontFamily={"Nanum Gothic"}
             focusBorderColor="#DCD8C8"
             value={password}
             onChange={(e) => setPassword(e.target.value)}

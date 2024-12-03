@@ -1,14 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   Box,
   Text,
   IconButton,
   Flex,
   Button,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  useToast,
   Link,
+  Divider,
+  VStack,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { ArrowForwardIcon, ArrowBackIcon } from "@chakra-ui/icons";
+import {
+  ArrowForwardIcon,
+  ArrowBackIcon,
+  HamburgerIcon,
+} from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 
 interface SidebarProps {
@@ -16,10 +27,17 @@ interface SidebarProps {
   toggleSidebar: () => void;
 }
 
+interface History {
+  id: string;
+  name: string;
+  date: string;
+}
+
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   const navigate = useNavigate();
   const transitionDuration = useBreakpointValue({ base: "0.3s", md: "0.5s" });
-
+  const [histories, setHistories] = useState<History[]>([]); // 타입 지정
+  const baseURL = import.meta.env.VITE_BASE_URL;
   const [hasAccessToken, setHasAccessToken] = useState(false);
   const [selectedTab, setSelectedTab] = useState<"history" | "myInfo" | null>(
     null
@@ -29,6 +47,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
     joinedAt: string;
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const toast = useToast();
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -39,6 +58,113 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
       setSelectedTab("history");
     }
   }, []);
+
+  // fetchHistories 함수 메모이제이션
+  const fetchHistories = useCallback(async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      const response = await fetch(`${baseURL}/api/history/show-all`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        const data: History[] = await response.json();
+        setHistories(data);
+      } else {
+        console.error("히스토리 불러오기에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("히스토리 불러오기 중 오류 발생:", error);
+    }
+  }, [baseURL]);
+
+  // 히스토리 이름 변경
+  const handleRename = async (historyId: string, newName: string) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      const response = await fetch(
+        `${baseURL}/api/history/rename/${historyId}/${encodeURIComponent(
+          newName
+        )}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.ok) {
+        toast({
+          title: "히스토리 이름이 성공적으로 변경되었습니다.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        fetchHistories(); // 히스토리 목록 새로고침
+      } else {
+        toast({
+          title: "히스토리 이름 변경에 실패했습니다.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      console.error("히스토리 이름 변경 중 오류 발생:", error);
+      toast({
+        title: "히스토리 이름 변경 중 오류가 발생했습니다.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
+  // 히스토리 삭제
+  const handleDelete = async (historyId: string) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      const response = await fetch(
+        `${baseURL}/api/history/delete/${historyId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.ok) {
+        toast({
+          title: "히스토리가 성공적으로 삭제되었습니다.",
+          status: "success",
+          duration: 3000,
+          position: "top",
+          isClosable: true,
+        });
+        fetchHistories(); // 히스토리 목록 새로고침
+      } else {
+        toast({
+          title: "히스토리 삭제에 실패했습니다.",
+          status: "error",
+          duration: 3000,
+          position: "top",
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      console.error("히스토리 삭제 중 오류 발생:", error);
+      toast({
+        title: "히스토리 삭제 중 오류가 발생했습니다.",
+        status: "error",
+        duration: 3000,
+        position: "top",
+        isClosable: true,
+      });
+    }
+  };
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -86,8 +212,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   // 로그아웃 핸들러
   const handleLogout = () => {
     localStorage.removeItem("accessToken"); // accessToken 제거
-    window.location.reload(); // 페이지 새로고침으로 GuestPage 렌더링
+    navigate("/"); // 메인 페이지로 강제 이동
+    window.location.reload(); // 페이지 새로고침
   };
+
+  // 컴포넌트 로드 시 히스토리 데이터 불러오기
+  useEffect(() => {
+    fetchHistories();
+  }, [fetchHistories]);
 
   return (
     <Box
@@ -153,8 +285,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             textAlign="center"
             mb={4}
             fontSize={{ base: "36px", md: "50px" }}
+            fontWeight={"bold"}
             color="#C73732"
-            fontFamily={"Nanum Pen Script"}
           >
             <Box>경북대 컴퓨터학부</Box>
             <Box mt="-10px">학사 정보 챗봇</Box>
@@ -208,7 +340,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
               <Flex
                 justifyContent="center" // Flex를 가로 방향으로 중앙 정렬
                 alignItems="center" // Flex를 세로 방향으로 중앙 정렬
-                mt={4}
               >
                 <Flex
                   justifyContent="space-between" // 버튼 간격 균등 분배
@@ -271,30 +402,100 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             )}
             {/* 선택된 탭 내용 표시 */}
             {selectedTab === "history" && (
-              <Box
-                width={{ base: "200px", md: "250px" }}
-                height={"280px"}
-                mt={10}
+              <VStack
+                mt={5}
                 ml={"auto"}
                 mr={"auto"}
-                borderRadius={"md"}
-                display={"flex"}
-                justifyContent={"center"}
-                alignItems={"center"}
-                color={"black"}
-                fontSize={{ base: "20px", md: "24px" }}
-                background={"transparent"}
-                border={"2px solid #7E2B24"}
+                spacing="10px"
+                w={{ base: "200px", md: "250px" }}
+                minH={{ base: "100px", md: "200px" }}
               >
-                히스토리 내용이 표시됩니다.
-              </Box>
+                {histories.length > 0 ? (
+                  histories.map((history) => (
+                    <Flex
+                      key={history.id}
+                      justifyContent="space-between"
+                      alignItems="center"
+                      bg="#FFCDC2"
+                      padding="10px"
+                      borderRadius="8px"
+                      width="100%"
+                    >
+                      <Button
+                        variant="unstyled"
+                        onClick={() => {
+                          navigate(`/chat/${history.id}`);
+                          toggleSidebar(); // 클릭 시 사이드바 닫기
+                        }}
+                        textAlign="left"
+                        color="#333"
+                        pl={2}
+                        fontSize={{ base: "lg", md: "xl" }}
+                        _hover={{ textDecoration: "underline" }}
+                        flex="1"
+                        overflow="hidden" // 텍스트가 버튼의 크기를 넘지 않도록 설정
+                        textOverflow="ellipsis" // 텍스트가 넘칠 경우 ...으로 표시
+                        whiteSpace="nowrap" // 텍스트를 한 줄로 고정
+                      >
+                        {history.name || "Untitled History"}
+                      </Button>
+                      <Menu>
+                        <MenuButton
+                          as={IconButton}
+                          icon={<HamburgerIcon />}
+                          variant="ghost"
+                          aria-label="Options"
+                          _hover={{ bg: "transparent" }}
+                          _active={{ bg: "transparent" }}
+                        />
+                        <MenuList
+                          color={"black"}
+                          fontSize={{ base: "md", md: "lg" }}
+                          width="15 0px" // 내부 글자 길이에 맞게 너비 설정
+                          minWidth="unset" // 기본 최소 너비 설정 제거
+                        >
+                          <MenuItem
+                            onClick={() => {
+                              const newName =
+                                prompt("새로운 이름을 입력하세요:");
+                              if (newName) {
+                                handleRename(history.id, newName);
+                              }
+                            }}
+                          >
+                            이름 바꾸기
+                          </MenuItem>
+                          <Divider />
+                          <MenuItem
+                            onClick={() => {
+                              if (
+                                window.confirm(
+                                  `"${history.name}" 히스토리를 삭제하시겠습니까?`
+                                )
+                              ) {
+                                handleDelete(history.id);
+                              }
+                            }}
+                          >
+                            삭제하기
+                          </MenuItem>
+                        </MenuList>
+                      </Menu>
+                    </Flex>
+                  ))
+                ) : (
+                  <Text color="#777" fontSize={{ base: "xl", md: "2xl" }}>
+                    이전 히스토리가 없습니다.
+                  </Text>
+                )}
+              </VStack>
             )}
             {selectedTab === "myInfo" && (
               <Box
                 width={{ base: "200px", md: "250px" }}
                 display={"flex"}
                 flexDirection={"column"}
-                mt={10}
+                mt={5}
                 ml={"auto"}
                 mr={"auto"}
                 p={5}
@@ -302,8 +503,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                 textAlign={"left"}
                 color={"black"}
                 fontSize={{ base: "20px", md: "26px" }}
-                background={"#F2B8AB"}
-                opacity={0.8}
+                background={"#FFCDC2"}
                 boxShadow={
                   "0px 4px 6px rgba(0, 0, 0, 0.1), 0px 2px 4px rgba(0, 0, 0, 0.06)"
                 } // 사용자 정의 그림자
@@ -322,10 +522,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                   mt={4}
                   fontSize={{ base: "20px", md: "22px" }}
                   fontWeight="medium"
-                  bg="#E7A8A3"
+                  bg="#EFA9A4"
                   color="black"
                   _hover={{ bg: "#D17C74" }}
                   onClick={handleLogout} // 로그아웃 버튼
+                  boxShadow={
+                    "0px 2px 3px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.06)"
+                  } // 사용자 정의 그림자
                 >
                   로그아웃
                 </Button>
@@ -333,9 +536,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                   mt={4}
                   fontSize={{ base: "20px", md: "22px" }}
                   fontWeight="medium"
-                  bg="#E7A8A3"
+                  bg="#EFA9A4"
                   color="black"
                   _hover={{ bg: "#D17C74" }}
+                  boxShadow={
+                    "0px 2px 3px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.06)"
+                  } // 사용자 정의 그림자
                 >
                   회원탈퇴
                 </Button>
@@ -343,9 +549,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             )}
             {/* 학부 정보 */}
             <Box
-              fontFamily="'Nanum Gothic', sans-serif"
+              fontFamily="'Nanum Gothic'"
               fontSize={{ base: "10px", md: "12px" }}
-              mt={5}
               pl={{ base: "15px", md: "30px" }}
               pr={0}
               pt={5}
