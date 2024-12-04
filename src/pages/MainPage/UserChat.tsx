@@ -1,10 +1,18 @@
 import { useEffect, useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { MessageInput } from "./MessageInput/MessageInput";
 import { MessageList } from "./messageList/MessageList";
 import { Sidebar } from "./Sidebar/Sidebar";
 import { IntroModal } from "./IntroModal";
-import { Box, Flex, Spinner, Text, Button, Image } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Spinner,
+  Text,
+  Button,
+  Image,
+  useToast,
+} from "@chakra-ui/react";
 import tutorial1 from "@/assets/tutorial1.svg";
 import tutorial2 from "@/assets/tutorial2.svg";
 import tutorial3 from "@/assets/tutorial3.svg";
@@ -38,6 +46,8 @@ const UserChat = () => {
   const pageRef = useRef<HTMLDivElement>(null);
   const prevHeightRef = useRef<number>(0); // 이전 높이를 저장할 ref
   const baseURL = import.meta.env.VITE_BASE_URL;
+  const toast = useToast();
+  const navigate = useNavigate();
 
   interface ResponseData {
     answer: string;
@@ -108,10 +118,32 @@ const UserChat = () => {
         setMessages((prev) => [...prev, formattedResponse]);
       } catch (error) {
         console.error("에러 발생:", error);
+        // Toast로 에러 메시지 표시
+        toast({
+          title: (
+            <span style={{ fontSize: "1.5rem", fontWeight: "bold" }}>
+              에러 발생
+            </span>
+          ),
+          description: (
+            <span style={{ fontSize: "1.2rem" }}>
+              5초 뒤 메인페이지로 이동합니다.
+            </span>
+          ),
+          status: "error",
+          position: "top",
+          duration: 4500,
+          isClosable: true,
+        });
         setMessages((prev) => [
           ...prev,
           "서버에 문제가 있습니다. 잠시 후 다시 시도해주세요!",
         ]);
+
+        // 5초 후 메인 페이지로 이동
+        setTimeout(() => {
+          navigate("/");
+        }, 5000);
       } finally {
         setLoading(false);
       }

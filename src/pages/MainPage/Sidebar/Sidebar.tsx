@@ -45,6 +45,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   const [userInfo, setUserInfo] = useState<{
     nickname: string;
     joinedAt: string;
+    num_of_question: number;
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const toast = useToast();
@@ -333,23 +334,29 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           width="100%"
           height="calc(100vh - 16px)"
         >
-          <Box
-            textAlign="center"
-            mb={4}
-            fontSize={{ base: "36px", md: "50px" }}
-            fontWeight={"bold"}
-            color="#C73732"
-          >
-            <Box>경북대 컴퓨터학부</Box>
-            <Box mt="-10px">학사 정보 챗봇</Box>
+          <Box width={"100%"} mt={-50} pt={50} bg="#fcb9aa" zIndex={30000}>
+            <Box
+              textAlign="center"
+              mb={4}
+              fontSize={{ base: "36px", md: "50px" }}
+              fontWeight={"bold"}
+              color="#C73732"
+              onClick={() => navigate("/")} // 메인 페이지로 이동
+              cursor={"pointer"} // 커서를 손가락 모양으로 변경
+            >
+              <Box>경북대 컴퓨터학부</Box>
+              <Box mt="-10px">학사 정보 챗봇</Box>
+            </Box>
+            <Box
+              as="hr"
+              width="90%"
+              borderTop="3px solid #FFD0C6"
+              ml={"auto"}
+              mr={"auto"}
+              mb={5}
+              borderRadius={"md"}
+            />
           </Box>
-          <Box
-            as="hr"
-            width="90%"
-            borderTop="3px solid #FFD0C6"
-            my={5}
-            borderRadius={"md"}
-          />
           <Box
             flex="1"
             overflowY="auto"
@@ -562,8 +569,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
               >
                 {userInfo ? (
                   <Box>
-                    <Text>닉네임: {userInfo.nickname}</Text>
-                    <Text>가입일: {userInfo.joinedAt.split("T")[0]}</Text>
+                    <Text>닉네임 : {userInfo.nickname}</Text>
+                    <Text>가입일 : {userInfo.joinedAt.split("T")[0]}</Text>
+                    <Text>지금까지 한 질문: {userInfo.num_of_question}개</Text>
                   </Box>
                 ) : error ? (
                   <Text color="red.500">{error}</Text>
