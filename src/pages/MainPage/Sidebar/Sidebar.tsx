@@ -101,6 +101,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           title: "히스토리 이름이 성공적으로 변경되었습니다.",
           status: "success",
           duration: 3000,
+          position: "top",
           isClosable: true,
         });
         fetchHistories(); // 히스토리 목록 새로고침
@@ -109,6 +110,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           title: "히스토리 이름 변경에 실패했습니다.",
           status: "error",
           duration: 3000,
+          position: "top",
           isClosable: true,
         });
       }
@@ -118,6 +120,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         title: "히스토리 이름 변경 중 오류가 발생했습니다.",
         status: "error",
         duration: 3000,
+        position: "top",
         isClosable: true,
       });
     }
@@ -158,6 +161,55 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
       console.error("히스토리 삭제 중 오류 발생:", error);
       toast({
         title: "히스토리 삭제 중 오류가 발생했습니다.",
+        status: "error",
+        duration: 3000,
+        position: "top",
+        isClosable: true,
+      });
+    }
+  };
+
+  const handleUserDelete = async () => {
+    const confirmation = window.confirm(
+      "정말로 회원탈퇴를 하시겠습니까? 모든 데이터가 삭제됩니다."
+    );
+    if (!confirmation) return;
+
+    try {
+      const token = localStorage.getItem("accessToken");
+      const response = await fetch(`${baseURL}/api/member/delete`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        toast({
+          title: "회원탈퇴가 완료되었습니다.",
+          status: "success",
+          duration: 3000,
+          position: "top",
+          isClosable: true,
+        });
+        localStorage.removeItem("accessToken");
+        navigate("/");
+        window.location.reload();
+      } else {
+        const errorData = await response.json();
+        toast({
+          title: `회원탈퇴 실패: ${errorData.error || "알 수 없는 오류"}`,
+          status: "error",
+          duration: 3000,
+          position: "top",
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      console.error("회원탈퇴 중 오류 발생:", error);
+      toast({
+        title: "회원탈퇴 중 오류가 발생했습니다.",
         status: "error",
         duration: 3000,
         position: "top",
@@ -539,6 +591,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                   bg="#EFA9A4"
                   color="black"
                   _hover={{ bg: "#D17C74" }}
+                  onClick={handleUserDelete} // 회원탈퇴 버튼
                   boxShadow={
                     "0px 2px 3px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.06)"
                   } // 사용자 정의 그림자
