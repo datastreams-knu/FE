@@ -454,7 +454,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                       background: "#B86D66", // 클릭 시 진한 색상
                     }}
                   >
-                    내 정보
+                    내정보
                   </Button>
                 </Flex>
               </Flex>
