@@ -213,7 +213,7 @@ const UserChat = () => {
         console.error("Error fetching history messages:", error);
       } finally {
         const elapsedTime = Date.now() - startTime; // 경과 시간 계산
-        const remainingTime = Math.max(2000 - elapsedTime, 0); // 최소 3초를 보장
+        const remainingTime = Math.max(2000 - elapsedTime, 0); // 최소 2초를 보장
 
         setTimeout(() => {
           setFetchingHistory(false); // 로딩 종료
@@ -299,8 +299,8 @@ const UserChat = () => {
           zIndex="2000" // 다른 요소 위로 오도록 설정
         >
           <Spinner size="xl" color="white" />
-          <Text color="white" fontSize={{ base: "lg", md: "xl" }} ml="4">
-            잠시만 기다려주세요! 챗봇이 준비 중입니다...
+          <Text color="white" fontSize={{ base: "xl", md: "3xl" }} ml="4">
+            챗봇의 전원을 키고 있습니다🤖
           </Text>
         </Box>
       )}

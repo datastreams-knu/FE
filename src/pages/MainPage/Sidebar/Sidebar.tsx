@@ -467,7 +467,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                 mr={"auto"}
                 spacing="10px"
                 w={{ base: "200px", md: "250px" }}
-                minH={{ base: "100px", md: "200px" }}
+                minH="250px"
               >
                 {histories.length > 0 ? (
                   histories.map((history) => (
