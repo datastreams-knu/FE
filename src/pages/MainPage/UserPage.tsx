@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Sidebar } from "./Sidebar/Sidebar";
 import { Box, Button, Flex, Text, Divider } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import AnimatedText from "./AnimatedText";
 
 const UserPage = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -79,7 +80,7 @@ const UserPage = () => {
         </Text>
         <Button
           onClick={createNewHistory}
-          fontSize={{ base: "lg", md: "xl" }}
+          fontSize={{ base: "lg", md: "2xl" }}
           bg="#FCF6DC"
           _hover={{ bg: "#CBC096", transform: "scale(1.01)" }}
           mb="30px"
@@ -88,9 +89,9 @@ const UserPage = () => {
         >
           새로운 채팅 시작하기 🚀
         </Button>
-        <Text fontSize={{ base: "lg", md: "2xl" }} mt={-5} fontWeight={"md"}>
-          사이드바를 열어 예전 질문 기록을 확인할 수 있어요!
-        </Text>
+        <AnimatedText>
+          사이드바를 열어 예전 질문 기록을 확인할 수 있습니다!
+        </AnimatedText>
         <Divider />
       </Flex>
     </Box>
