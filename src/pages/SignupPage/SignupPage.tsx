@@ -252,7 +252,7 @@ const SignupPage: React.FC = () => {
 
           {/* 닉네임 입력 */}
           <Input
-            placeholder="닉네임"
+            placeholder="닉네임 (7글자 이하로 입력해주세요)"
             bg="white"
             fontSize={"sm"}
             fontFamily={"Nanum Gothic"}

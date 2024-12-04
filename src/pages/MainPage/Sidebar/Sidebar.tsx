@@ -611,8 +611,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             {/* 학부 정보 */}
             <Box
               fontFamily="'Nanum Gothic'"
-              fontSize={{ base: "10px", md: "12px" }}
-              pl={{ base: "15px", md: "30px" }}
+              fontSize={{ base: "9px", md: "12px" }}
+              pl={{ base: "20px", md: "30px" }}
               pr={0}
               pt={5}
               pb={50}

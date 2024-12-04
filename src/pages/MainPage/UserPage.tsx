@@ -71,7 +71,7 @@ const UserPage = () => {
       >
         <Text
           fontFamily={"Nanum Gothic"}
-          fontSize={{ base: "lg", md: "3xl" }}
+          fontSize={{ base: "md", md: "3xl" }}
           fontWeight={"bold"}
           mb="20px"
           color="#555"
@@ -80,7 +80,7 @@ const UserPage = () => {
         </Text>
         <Button
           onClick={createNewHistory}
-          fontSize={{ base: "lg", md: "2xl" }}
+          fontSize={{ base: "md", md: "2xl" }}
           bg="#FCF6DC"
           _hover={{ bg: "#CBC096", transform: "scale(1.01)" }}
           mb="30px"
