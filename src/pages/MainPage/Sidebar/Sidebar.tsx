@@ -644,8 +644,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                   링크 연결
                 </Link>
               </Box>
-              <Box>Copyright(c) 2024, 조현준(PM, AI), 최기영(FE),</Box>
-              <Box>유승종(BE), 고상희(AI), 이석현(AI)</Box>
+              <Box>Copyright(c) 2024, 최기영(FE), 유승종(BE)</Box>
+              <Box> 고상희(AI), 이석현(AI), 조현준(AI, PM)</Box>
             </Box>
           </Box>
         </Flex>
