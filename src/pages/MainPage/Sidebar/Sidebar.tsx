@@ -338,7 +338,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             <Box
               textAlign="center"
               mb={4}
-              fontSize={{ base: "36px", md: "50px" }}
+              fontSize={{ base: "36px", md: "46px" }}
+              mt={-3}
               fontWeight={"bold"}
               color="#C73732"
               onClick={() => navigate("/")} // 메인 페이지로 이동
@@ -489,7 +490,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                         textAlign="left"
                         color="#333"
                         pl={2}
-                        fontSize={{ base: "lg", md: "xl" }}
+                        fontSize={{ base: "lg", md: "lg" }}
                         _hover={{ textDecoration: "underline" }}
                         flex="1"
                         overflow="hidden" // 텍스트가 버튼의 크기를 넘지 않도록 설정
@@ -557,30 +558,34 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                 mt={5}
                 ml={"auto"}
                 mr={"auto"}
+                mb={3}
                 p={5}
                 borderRadius={"md"}
                 textAlign={"left"}
                 color={"black"}
-                fontSize={{ base: "20px", md: "26px" }}
                 background={"#FFCDC2"}
                 boxShadow={
                   "0px 4px 6px rgba(0, 0, 0, 0.1), 0px 2px 4px rgba(0, 0, 0, 0.06)"
                 } // 사용자 정의 그림자
               >
                 {userInfo ? (
-                  <Box>
+                  <Box fontSize={{ base: "lg", md: "xl" }}>
                     <Text>닉네임 : {userInfo.nickname}</Text>
                     <Text>가입일 : {userInfo.joinedAt.split("T")[0]}</Text>
                     <Text>지금까지 한 질문: {userInfo.num_of_question}개</Text>
                   </Box>
                 ) : error ? (
-                  <Text color="red.500">{error}</Text>
+                  <Text color="red.500" fontSize={"md"}>
+                    잠시 오류가 있어요😭
+                    <br />
+                    페이지를 새로고침 해주세요!
+                  </Text>
                 ) : (
                   <Text>정보를 불러오는 중...</Text>
                 )}
                 <Button
                   mt={4}
-                  fontSize={{ base: "20px", md: "22px" }}
+                  fontSize={{ base: "lg", md: "lg" }}
                   fontWeight="medium"
                   bg="#EFA9A4"
                   color="black"
@@ -594,7 +599,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                 </Button>
                 <Button
                   mt={4}
-                  fontSize={{ base: "20px", md: "22px" }}
+                  fontSize={{ base: "lg", md: "lg" }}
                   fontWeight="medium"
                   bg="#EFA9A4"
                   color="black"

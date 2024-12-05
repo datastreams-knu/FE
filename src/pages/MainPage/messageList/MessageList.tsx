@@ -56,7 +56,7 @@ export const MessageList: React.FC<MessageListProps> = ({ messages }) => {
             maxW="80%"
             alignSelf={isEven ? "flex-start" : "flex-end"}
             wordBreak="break-word"
-            fontSize={{ base: "xl", md: "2xl" }}
+            fontSize={{ base: "xl", md: "xl" }}
             animation="fadeIn 0.5s ease" // CSS 애니메이션
             style={{
               opacity: 0,
