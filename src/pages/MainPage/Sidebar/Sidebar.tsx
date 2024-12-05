@@ -617,7 +617,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             <Box
               fontFamily="'Nanum Gothic'"
               fontSize={{ base: "10px", md: "12px" }}
-              pl={{ base: "22px", md: "35px" }}
+              pl={{ base: "18px", md: "35px" }}
               pr={0}
               pt={10}
               pb={50}
