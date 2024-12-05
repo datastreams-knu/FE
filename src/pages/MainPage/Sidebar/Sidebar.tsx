@@ -340,7 +340,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
               mb={4}
               fontSize={{ base: "36px", md: "46px" }}
               mt={-3}
-              fontWeight={"bold"}
+              fontWeight={"md"}
               color="#C73732"
               onClick={() => navigate("/")} // 메인 페이지로 이동
               cursor={"pointer"} // 커서를 손가락 모양으로 변경
