@@ -338,7 +338,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             <Box
               textAlign="center"
               mb={4}
-              fontSize={{ base: "36px", md: "46px" }}
+              fontSize={{ base: "30px", md: "46px" }}
               mt={-3}
               fontWeight={"md"}
               color="#C73732"
@@ -617,9 +617,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             <Box
               fontFamily="'Nanum Gothic'"
               fontSize={{ base: "9px", md: "12px" }}
-              pl={{ base: "20px", md: "30px" }}
+              pl={{ base: "20px", md: "35px" }}
               pr={0}
-              pt={5}
+              pt={10}
               pb={50}
               ml={"auto"}
               mr={"auto"}

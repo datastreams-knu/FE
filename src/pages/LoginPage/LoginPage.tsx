@@ -170,7 +170,7 @@ const LoginPage: React.FC = () => {
             w="full"
             bg="#DCD8C8"
             color="black"
-            fontSize={"2xl"}
+            fontSize={{ base: "xl", md: "2xl" }}
             fontWeight={"light"}
             letterSpacing={"0.1em"}
             _hover={{ bg: "#AAA282" }}
@@ -178,7 +178,7 @@ const LoginPage: React.FC = () => {
           >
             로그인하기
           </Button>
-          <Text fontSize="2xl" color="gray.600">
+          <Text fontSize={{ base: "lg", md: "xl" }} color="gray.600">
             아직 회원이 아니신가요?{" "}
             <Link color="#8B8469" onClick={handleSignup}>
               회원가입

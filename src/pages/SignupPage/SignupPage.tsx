@@ -216,7 +216,12 @@ const SignupPage: React.FC = () => {
             </Stack>
             {/* 이메일 중복 확인 메시지 */}
             {emailCheckMessage && (
-              <Text fontSize={"lg"} color="#8B8469" mt={2} textAlign={"center"}>
+              <Text
+                fontSize={{ base: "sm", md: "lg" }}
+                color="#8B8469"
+                mt={2}
+                textAlign={"center"}
+              >
                 {emailCheckMessage}
               </Text>
             )}
