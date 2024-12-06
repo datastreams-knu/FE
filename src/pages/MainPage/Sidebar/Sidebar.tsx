@@ -342,7 +342,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             <Box
               textAlign="center"
               mb={4}
-              fontSize={{ base: "30px", md: "46px" }}
+              fontSize={{ base: "30px", md: "40px" }}
               mt={-3}
               fontWeight={"md"}
               color="#C73732"

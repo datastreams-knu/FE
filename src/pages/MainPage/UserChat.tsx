@@ -392,7 +392,7 @@ const UserChat = () => {
                 maxW="800px"
               >
                 <Button
-                  fontSize={{ base: "xl", md: "2xl" }}
+                  fontSize={{ base: "lg", md: "xl" }}
                   fontWeight="medium"
                   bg="#EAE6DA"
                   _hover={{ bg: "#DDD8C6", transform: "scale(1.05)" }}
@@ -401,7 +401,7 @@ const UserChat = () => {
                   해외 인턴십 정보 알려줘
                 </Button>
                 <Button
-                  fontSize={{ base: "xl", md: "2xl" }}
+                  fontSize={{ base: "lg", md: "xl" }}
                   fontWeight="medium"
                   bg="#EAE6DA"
                   _hover={{ bg: "#DDD8C6", transform: "scale(1.05)" }}
@@ -410,7 +410,7 @@ const UserChat = () => {
                   지도교수 상담 일정 알려줘
                 </Button>
                 <Button
-                  fontSize={{ base: "xl", md: "2xl" }}
+                  fontSize={{ base: "lg", md: "xl" }}
                   fontWeight="medium"
                   bg="#EAE6DA"
                   _hover={{ bg: "#DDD8C6", transform: "scale(1.05)" }}
@@ -421,7 +421,7 @@ const UserChat = () => {
                   정설영 교수님 이메일 알려줘
                 </Button>
                 <Button
-                  fontSize={{ base: "xl", md: "2xl" }}
+                  fontSize={{ base: "lg", md: "xl" }}
                   fontWeight="medium"
                   bg="#EAE6DA"
                   _hover={{ bg: "#DDD8C6", transform: "scale(1.05)" }}
@@ -430,7 +430,7 @@ const UserChat = () => {
                   심컴 졸업요건 알려줘
                 </Button>
                 <Button
-                  fontSize={{ base: "xl", md: "2xl" }}
+                  fontSize={{ base: "lg", md: "xl" }}
                   fontWeight="medium"
                   bg="#EAE6DA"
                   _hover={{ bg: "#DDD8C6", transform: "scale(1.05)" }}
