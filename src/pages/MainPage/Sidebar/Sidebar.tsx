@@ -72,7 +72,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
       });
       if (response.ok) {
         const data: History[] = await response.json();
-        setHistories(data);
+        // Sort histories by date in descending order (most recent first)
+        const sortedHistories = data.sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        );
+        setHistories(sortedHistories);
       } else {
         console.error("히스토리 불러오기에 실패했습니다.");
       }
