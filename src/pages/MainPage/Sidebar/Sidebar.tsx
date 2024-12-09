@@ -346,7 +346,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
               mt={-3}
               fontWeight={"md"}
               color="#C73732"
-              onClick={() => navigate("/")} // 메인 페이지로 이동
+              onClick={() => {
+                navigate("/"); // 메인 페이지로 이동
+                window.location.reload(); // 페이지 새로고침
+              }}
               cursor={"pointer"} // 커서를 손가락 모양으로 변경
             >
               <Box>경북대 컴퓨터학부</Box>
